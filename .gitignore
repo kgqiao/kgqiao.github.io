@@ -1,9 +1,8 @@
-# Ignore log files
-*.zip
-
-# Ignore a specific file containing API keys or credentials
-#.env
-
-# Ignore an entire folder (like node_modules or build outputs)
-#node_modules/
-#dist/
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example

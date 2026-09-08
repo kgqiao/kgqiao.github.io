@@ -1,0 +1,15 @@
+{
+  "id": "computational-poetics",
+  "title": "Computational Poetics: Algorithmic Stanzas",
+  "role": "Creator & Systems Designer",
+  "category": "Creative Code · Literary Theory",
+  "disciplines": ["Software Engineering", "Creative Writing", "Typography"],
+  "tagline": "Real-time generative prose using Markov chains and responsive typographic pacing.",
+  "description": "Explores how algorithmic constraints shape literary form and reader engagement through interactive typography.",
+  "technologies": ["TypeScript", "InDesign Grids", "NLP Parser", "Digital Publishing"],
+  "keyHighlights": [
+    "Algorithmic verse generation respecting classical meter",
+    "Dynamic web typography adapting line-height to reader velocity"
+  ],
+  "badgeColor": "from-cyan-500 to-indigo-500"
+}

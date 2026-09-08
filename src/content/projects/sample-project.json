@@ -1,0 +1,18 @@
+{
+  "id": "generative-audio-visualizer",
+  "title": "Generative Audio Visualizer",
+  "category": "Creative Coding",
+  "tagline": "Real-time FFT audio spectrum analyzer and particle field.",
+  "role": "Lead Creative Developer",
+  "status": "Active",
+  "overview": "Synthesizes real-time Web Audio API frequency bins into interactive WebGL particle dynamics.",
+  "techStack": [
+    { "name": "TypeScript", "category": "Language" },
+    { "name": "WebGL", "category": "Graphics" },
+    { "name": "Web Audio API", "category": "Audio" }
+  ],
+  "keyFeatures": [
+    "High-frequency 60fps GPU particle displacement",
+    "Zero-dependency reactive canvas pipeline"
+  ]
+}

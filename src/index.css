@@ -1,0 +1,510 @@
+@import "tailwindcss";
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    -webkit-touch-callout: none !important;
+  }
+
+  html {
+    color-scheme: dark;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+  }
+  body {
+    background-color: #09090b;
+    color: #f4f4f5;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-user-select: none !important;
+    user-select: none !important;
+  }
+
+  img,
+  svg,
+  canvas,
+  video {
+    -webkit-user-drag: none !important;
+    user-drag: none !important;
+    -webkit-touch-callout: none !important;
+    pointer-events: auto;
+  }
+}
+
+/* =========================================================================
+   ANTI-SCREENSHOT & PRINT SCREEN BLACKOUT PROTECTION
+   ========================================================================= */
+@media print {
+  html,
+  body {
+    background-color: #000000 !important;
+    color: #000000 !important;
+    display: block !important;
+  }
+
+  body * {
+    visibility: hidden !important;
+    display: none !important;
+  }
+
+  body::after {
+    content: "Content Protected";
+    visibility: visible !important;
+    display: flex !important;
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: #000000 !important;
+    color: #000000 !important;
+    z-index: 99999999 !important;
+  }
+}
+
+/* =========================================================================
+   TRIO PALETTE CSS SYSTEM & DEFAULT FALLBACKS
+   =========================================================================
+   EASIEST 1-LINE SWAPPING METHOD:
+   You do NOT need to comment/uncomment large CSS blocks!
+   Simply open `src/data/profile.ts` and set:
+     palette: 'studio-triad' | 'celestial-atelier' | 'cybernetic-noir' | 'nordic-terracotta' | 'indigo-vermilion'
+   
+   The application automatically injects the selected palette variables into
+   the browser runtime dynamically!
+   
+   The default `:root` block below provides instant initial fallback styles:
+   - Discipline 01 (Code & Systems):   --code-primary, --code-secondary, --code-accent, --code-rgb
+   - Discipline 02 (Art & Visuals):    --art-primary, --art-secondary, --art-accent, --art-rgb
+   - Discipline 03 (Writing & Essays): --writing-primary, --writing-secondary, --writing-accent, --writing-rgb
+   ========================================================================= */
+
+:root {
+  /* -----------------------------------------------------------------------
+     01. CODE & SOFTWARE (Default: Emerald Jade / Deep Mint)
+     ----------------------------------------------------------------------- */
+  --code-primary: #059669;
+  --code-secondary: #10b981;
+  --code-accent: #34d399;
+  --code-rgb: 16, 185, 129;
+
+  /* -----------------------------------------------------------------------
+     02. ART & VISUAL DESIGN (Default: Cinnabar Rose / Berry Crimson)
+     ----------------------------------------------------------------------- */
+  --art-primary: #e11d48;
+  --art-secondary: #f43f5e;
+  --art-accent: #fb7185;
+  --art-rgb: 225, 29, 72;
+
+  /* -----------------------------------------------------------------------
+     03. WRITING & ESSAYS (Default: Warm Honey Amber / Golden Ochre)
+     ----------------------------------------------------------------------- */
+  --writing-primary: #d97706;
+  --writing-secondary: #f59e0b;
+  --writing-accent: #fbbf24;
+  --writing-rgb: 217, 119, 6;
+
+  /* Bubble & Pill dynamic shortcuts */
+  --bubble-artist-1: var(--art-primary);
+  --bubble-artist-2: var(--art-secondary);
+  --bubble-writer-1: var(--writing-primary);
+  --bubble-writer-2: var(--writing-secondary);
+  --bubble-prog-1: var(--code-primary);
+  --bubble-prog-2: var(--code-secondary);
+}
+
+/* =========================================================================
+   DYNAMIC DISCIPLINE UTILITIES (100% Variable-Driven & Responsive)
+   ========================================================================= */
+
+/* Discipline 01: Code & Software */
+.badge-code {
+  background-color: rgba(var(--code-rgb), 0.12);
+  border: 1px solid rgba(var(--code-rgb), 0.35);
+  color: var(--code-accent);
+}
+.btn-pill-code-active {
+  background-color: var(--code-primary);
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 4px 14px -2px rgba(var(--code-rgb), 0.4);
+}
+.text-code {
+  color: var(--code-accent);
+}
+.text-code-primary {
+  color: var(--code-primary);
+}
+.bg-code-primary {
+  background-color: var(--code-primary);
+}
+.bg-code-muted {
+  background-color: rgba(var(--code-rgb), 0.12);
+}
+.border-code {
+  border-color: rgba(var(--code-rgb), 0.35);
+}
+.border-code-subtle {
+  border-color: rgba(var(--code-rgb), 0.2);
+}
+.hover-text-code:hover {
+  color: var(--code-accent);
+}
+.hover-border-code:hover {
+  border-color: rgba(var(--code-rgb), 0.6);
+}
+.focus-border-code:focus {
+  border-color: var(--code-secondary);
+  outline: none;
+}
+
+/* Discipline 02: Art & Visual Design */
+.badge-art {
+  background-color: rgba(var(--art-rgb), 0.12);
+  border: 1px solid rgba(var(--art-rgb), 0.35);
+  color: var(--art-accent);
+}
+.btn-pill-art-active {
+  background-color: var(--art-primary);
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 4px 14px -2px rgba(var(--art-rgb), 0.4);
+}
+.text-art {
+  color: var(--art-accent);
+}
+.text-art-primary {
+  color: var(--art-primary);
+}
+.bg-art-primary {
+  background-color: var(--art-primary);
+}
+.bg-art-muted {
+  background-color: rgba(var(--art-rgb), 0.12);
+}
+.border-art {
+  border-color: rgba(var(--art-rgb), 0.35);
+}
+.border-art-subtle {
+  border-color: rgba(var(--art-rgb), 0.2);
+}
+.hover-text-art:hover {
+  color: var(--art-accent);
+}
+.hover-border-art:hover {
+  border-color: rgba(var(--art-rgb), 0.6);
+}
+.focus-border-art:focus {
+  border-color: var(--art-secondary);
+  outline: none;
+}
+
+/* Discipline 03: Writing & Essays */
+.badge-writing {
+  background-color: rgba(var(--writing-rgb), 0.12);
+  border: 1px solid rgba(var(--writing-rgb), 0.35);
+  color: var(--writing-accent);
+}
+.btn-pill-writing-active {
+  background-color: var(--writing-primary);
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 4px 14px -2px rgba(var(--writing-rgb), 0.4);
+}
+.text-writing {
+  color: var(--writing-accent);
+}
+.text-writing-primary {
+  color: var(--writing-primary);
+}
+.bg-writing-primary {
+  background-color: var(--writing-primary);
+}
+.bg-writing-muted {
+  background-color: rgba(var(--writing-rgb), 0.12);
+}
+.border-writing {
+  border-color: rgba(var(--writing-rgb), 0.35);
+}
+.border-writing-subtle {
+  border-color: rgba(var(--writing-rgb), 0.2);
+}
+.hover-text-writing:hover {
+  color: var(--writing-accent);
+}
+.hover-border-writing:hover {
+  border-color: rgba(var(--writing-rgb), 0.6);
+}
+.focus-border-writing:focus {
+  border-color: var(--writing-secondary);
+  outline: none;
+}
+
+/* =========================================================================
+   DYNAMIC OMBRE GRADIENTS (100% Palette Variable-Driven)
+   ========================================================================= */
+.ombre-text-brand {
+  background: linear-gradient(135deg, var(--code-accent) 0%, var(--art-accent) 50%, var(--writing-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ombre-text-programmer {
+  background: linear-gradient(135deg, var(--code-accent) 0%, var(--code-primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ombre-text-artist {
+  background: linear-gradient(135deg, var(--art-accent) 0%, var(--art-primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ombre-text-writer {
+  background: linear-gradient(135deg, var(--writing-accent) 0%, var(--writing-primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ombre-text-multi {
+  background: linear-gradient(135deg, var(--code-accent) 0%, var(--art-accent) 50%, var(--writing-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* =========================================================================
+   BENTO CARD STYLING (Dark Mode Atmospheric Glass)
+   ========================================================================= */
+
+.bento-card {
+  position: relative;
+  background-color: rgba(18, 18, 24, 0.85);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.bento-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 5%;
+  right: 5%;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  pointer-events: none;
+}
+
+.bento-card:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.75), inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Artist Bento Card */
+.bento-card-artist {
+  border-color: rgba(var(--art-rgb), 0.35);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(var(--art-rgb), 0.2);
+}
+
+.bento-card-artist:hover {
+  border-color: rgba(var(--art-rgb), 0.7);
+  box-shadow: 0 20px 50px -12px rgba(var(--art-rgb), 0.35), inset 0 1px 0 0 rgba(var(--art-rgb), 0.45);
+}
+
+/* Writer Bento Card */
+.bento-card-writer {
+  border-color: rgba(var(--writing-rgb), 0.35);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(var(--writing-rgb), 0.2);
+}
+
+.bento-card-writer:hover {
+  border-color: rgba(var(--writing-rgb), 0.7);
+  box-shadow: 0 20px 50px -12px rgba(var(--writing-rgb), 0.35), inset 0 1px 0 0 rgba(var(--writing-rgb), 0.45);
+}
+
+/* Programmer Bento Card */
+.bento-card-programmer {
+  border-color: rgba(var(--code-rgb), 0.35);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(var(--code-rgb), 0.2);
+}
+
+.bento-card-programmer:hover {
+  border-color: rgba(var(--code-rgb), 0.7);
+  box-shadow: 0 20px 50px -12px rgba(var(--code-rgb), 0.35), inset 0 1px 0 0 rgba(var(--code-rgb), 0.45);
+}
+
+/* =========================================================================
+   BUBBLY PILLS
+   ========================================================================= */
+
+.bubbly-pill-artist {
+  background: linear-gradient(135deg, rgba(var(--art-rgb), 0.2) 0%, rgba(var(--art-rgb), 0.1) 100%);
+  border: 1px solid rgba(var(--art-rgb), 0.45);
+  color: var(--art-secondary);
+  box-shadow: 0 2px 10px -2px rgba(var(--art-rgb), 0.25);
+}
+
+.bubbly-pill-writer {
+  background: linear-gradient(135deg, rgba(var(--writing-rgb), 0.2) 0%, rgba(var(--writing-rgb), 0.1) 100%);
+  border: 1px solid rgba(var(--writing-rgb), 0.45);
+  color: var(--writing-secondary);
+  box-shadow: 0 2px 10px -2px rgba(var(--writing-rgb), 0.25);
+}
+
+.bubbly-pill-prog {
+  background: linear-gradient(135deg, rgba(var(--code-rgb), 0.2) 0%, rgba(var(--code-rgb), 0.1) 100%);
+  border: 1px solid rgba(var(--code-rgb), 0.45);
+  color: var(--code-secondary);
+  box-shadow: 0 2px 10px -2px rgba(var(--code-rgb), 0.25);
+}
+
+.bubbly-pill-multi {
+  background: linear-gradient(135deg, rgba(var(--code-rgb), 0.18) 0%, rgba(var(--art-rgb), 0.18) 50%, rgba(var(--writing-rgb), 0.18) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  box-shadow: 0 2px 12px -2px rgba(var(--code-rgb), 0.2);
+}
+
+/* Ombre Buttons */
+.ombre-btn-brand {
+  background: linear-gradient(135deg, #5eead4 0%, #e879f9 50%, #fde047 100%);
+  color: #09090b;
+  font-weight: 700;
+  box-shadow: 0 4px 15px -3px rgba(232, 121, 249, 0.35);
+  transition: all 0.25s ease;
+}
+
+.ombre-btn-brand:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 10px 24px -4px rgba(232, 121, 249, 0.45);
+  transform: translateY(-1px);
+}
+
+.ombre-btn-prog {
+  background: linear-gradient(135deg, var(--code-primary) 0%, var(--code-secondary) 100%);
+  color: #09090b;
+  font-weight: 700;
+  box-shadow: 0 4px 15px -3px rgba(45, 212, 191, 0.35);
+}
+
+/* =========================================================================
+   THEME-SYNCHRONIZED TEXT SELECTION & MICRO SCROLLBARS
+   ========================================================================= */
+::selection {
+  background: rgba(var(--art-rgb), 0.35);
+  color: #ffffff;
+}
+
+/* Micro smooth scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--code-rgb), 0.6);
+}
+
+/* =========================================================================
+   INTERACTIVE SPOTLIGHT BORDER GLOW (Linear / Apple style)
+   ========================================================================= */
+.spotlight-card {
+  position: relative;
+}
+
+.spotlight-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    450px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.09),
+    transparent 45%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.spotlight-card:hover::after {
+  opacity: 1;
+}
+
+/* =========================================================================
+   ORGANIC FILM GRAIN / NOISE OVERLAY (Option 3)
+   ========================================================================= */
+.bg-grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Animation keyframes */
+@keyframes breathingHalo {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scale(1);
+    filter: blur(14px);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.03);
+    filter: blur(22px);
+  }
+}
+
+.animate-breathing-halo {
+  animation: breathingHalo 6.5s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s ease-out forwards;
+}
