@@ -1,13 +1,86 @@
-import { WritingPost, Project, InterdisciplinaryItem } from '../types';
-
-// ============================================================================
-// 1. AUTOMATIC WRITING DETECTION & TRACKING
-// ============================================================================
-
 /**
- * Calculates reading time and word count automatically from text/markdown.
+ * ============================================================================
+ * SINGLE SOURCE OF TRUTH: AUTOMATIC CONTENT DETECTION & ENRICHMENT
+ * ============================================================================
+ * 
+ * Centralized automatic scanning for:
+ * 1. Artworks (from /src/content/art/ and /public/art/)
+ * 2. Writing & Essays (from /src/content/writing/)
+ * 3. Software Projects (from /src/content/projects/)
+ * 4. Interdisciplinary Work (from /src/content/interdisciplinary/)
  */
-export function calculateTextMetrics(content: string): { wordCount: number; readingTime: string } {
+
+// ============================================================================
+// 1. AUTOMATIC ARTWORK DETECTION
+// ============================================================================
+export function getAllArtworks(explicitArtworks = []) {
+  // Vite compile-time scanner for images in /src/content/art/ and /public/art/
+  const srcArtModules = import.meta.glob('/src/content/art/**/*.{png,jpg,jpeg,webp,avif,svg,gif}', {
+    eager: true,
+    import: 'default',
+  });
+
+  const publicArtModules = import.meta.glob('/public/art/**/*.{png,jpg,jpeg,webp,avif,svg,gif}', {
+    eager: true,
+    import: 'default',
+  });
+
+  const existingIds = new Set(explicitArtworks.map(a => a.id));
+  const autoArtworks = [];
+
+  const combinedModules = { ...publicArtModules, ...srcArtModules };
+
+  for (const [path, assetUrl] of Object.entries(combinedModules)) {
+    const filename = path.split('/').pop()?.replace(/\.[^/.]+$/, '') || 'artwork';
+    const id = filename.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+    if (existingIds.has(id)) continue;
+    existingIds.add(id);
+
+    // Derive readable title
+    const title = filename.replace(/[_-]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+
+    // Auto-detect year from path or filename
+    const yearMatch = path.match(/\/(\d{4})\//) || filename.match(/\b(19\d\d|20\d\d)\b/);
+    const year = yearMatch ? yearMatch[1] : new Date().getFullYear().toString();
+
+    // Auto-detect category
+    let category = 'Digital Painting';
+    const lowerPath = path.toLowerCase();
+    if (lowerPath.includes('chinese') || lowerPath.includes('shuimo') || lowerPath.includes('ink')) {
+      category = 'Chinese Painting';
+    } else if (lowerPath.includes('mixed') || lowerPath.includes('media')) {
+      category = 'Ink & Mixed Media';
+    } else if (lowerPath.includes('book') || lowerPath.includes('print')) {
+      category = 'Book Design';
+    } else if (lowerPath.includes('web') || lowerPath.includes('ui')) {
+      category = 'Website Design';
+    }
+
+    // Standardize public URL for serving
+    let finalUrl = typeof assetUrl === 'string' ? assetUrl : path;
+    if (finalUrl.startsWith('/public/')) {
+      finalUrl = finalUrl.replace('/public/', '/');
+    }
+
+    autoArtworks.push({
+      id,
+      title,
+      imageUrl: finalUrl,
+      category,
+      year,
+      medium: category,
+      featured: false,
+    });
+  }
+
+  return [...explicitArtworks, ...autoArtworks];
+}
+
+// ============================================================================
+// 2. AUTOMATIC WRITING DETECTION & TRACKING
+// ============================================================================
+export function calculateTextMetrics(content = '') {
   const cleanText = content.replace(/[#*`_~\[\]()>-]/g, ' ').trim();
   const words = cleanText ? cleanText.split(/\s+/).length : 0;
   const minutes = Math.max(1, Math.ceil(words / 200));
@@ -17,40 +90,32 @@ export function calculateTextMetrics(content: string): { wordCount: number; read
   };
 }
 
-/**
- * Auto-discovers writing articles from /src/content/writing/ and enhances all posts
- * with live word counts and reading times.
- */
-export function getAllWritingPosts(explicitPosts: WritingPost[]): WritingPost[] {
-  // Vite compile-time scanner for markdown/text/json content
+export function getAllWritingPosts(explicitPosts = []) {
   const writingModules = import.meta.glob('/src/content/writing/**/*.{md,txt,json}', {
     eager: true,
     query: '?raw',
     import: 'default',
-  }) as Record<string, string>;
+  });
 
   const existingIds = new Set(explicitPosts.map(p => p.id));
-  const autoPosts: WritingPost[] = [];
+  const autoPosts = [];
 
   for (const [path, rawContent] of Object.entries(writingModules)) {
     if (typeof rawContent !== 'string') continue;
 
-    // Extract filename and title
     const filename = path.split('/').pop()?.replace(/\.[^/.]+$/, '') || 'untitled';
     const id = 'auto-writing-' + filename.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
     if (existingIds.has(id)) continue;
+    existingIds.add(id);
 
-    // Derive title from first markdown header '# Title' or filename
     const titleMatch = rawContent.match(/^#\s+(.+)$/m);
     const title = titleMatch
       ? titleMatch[1].trim()
       : filename.replace(/[_-]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 
-    // Clean body text (remove the first header if matched)
     const bodyContent = titleMatch ? rawContent.replace(titleMatch[0], '').trim() : rawContent.trim();
 
-    // Auto-detect category from folder or content
     let category = 'Essays';
     const lowerPath = path.toLowerCase();
     if (lowerPath.includes('fiction') || lowerPath.includes('story')) {
@@ -63,17 +128,14 @@ export function getAllWritingPosts(explicitPosts: WritingPost[]): WritingPost[] 
       category = 'Field Notes';
     }
 
-    // Auto-extract first paragraph as excerpt
     const paragraphs = bodyContent.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
     const excerpt = paragraphs.length > 0
       ? paragraphs[0].replace(/^[#*`_~>-]+\s*/, '').slice(0, 220) + (paragraphs[0].length > 220 ? '...' : '')
       : 'Read the complete piece...';
 
-    // Auto-calculate word count & reading time
     const { wordCount, readingTime } = calculateTextMetrics(bodyContent);
 
-    // Auto-detect tags from content keywords
-    const autoTags: string[] = [category];
+    const autoTags = [category];
     if (/design|ui|interface/i.test(bodyContent)) autoTags.push('Design');
     if (/philosophy|thought|mind/i.test(bodyContent)) autoTags.push('Philosophy');
     if (/code|software|algorithm/i.test(bodyContent)) autoTags.push('Technology');
@@ -93,7 +155,6 @@ export function getAllWritingPosts(explicitPosts: WritingPost[]): WritingPost[] 
     });
   }
 
-  // Enhance explicit posts with auto-computed reading metrics if missing
   const enhancedExplicitPosts = explicitPosts.map(post => {
     const metrics = calculateTextMetrics(post.content || '');
     return {
@@ -107,21 +168,17 @@ export function getAllWritingPosts(explicitPosts: WritingPost[]): WritingPost[] 
 }
 
 // ============================================================================
-// 2. AUTOMATIC CODE & PROJECT DETECTION & TRACKING
+// 3. AUTOMATIC CODE & PROJECT DETECTION
 // ============================================================================
-
-/**
- * Auto-discovers project specifications from /src/content/projects/
- */
-export function getAllProjects(explicitProjects: Project[]): Project[] {
+export function getAllProjects(explicitProjects = []) {
   const projectModules = import.meta.glob('/src/content/projects/**/*.{json,md}', {
     eager: true,
     query: '?raw',
     import: 'default',
-  }) as Record<string, string>;
+  });
 
   const existingIds = new Set(explicitProjects.map(p => p.id));
-  const autoProjects: Project[] = [];
+  const autoProjects = [];
 
   for (const [path, rawContent] of Object.entries(projectModules)) {
     if (typeof rawContent !== 'string') continue;
@@ -129,10 +186,11 @@ export function getAllProjects(explicitProjects: Project[]): Project[] {
     const id = 'auto-proj-' + filename.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
     if (existingIds.has(id)) continue;
+    existingIds.add(id);
 
     try {
       if (path.endsWith('.json')) {
-        const parsed = JSON.parse(rawContent) as Partial<Project>;
+        const parsed = JSON.parse(rawContent);
         autoProjects.push({
           id: parsed.id || id,
           title: parsed.title || filename.replace(/[_-]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
@@ -142,14 +200,14 @@ export function getAllProjects(explicitProjects: Project[]): Project[] {
           role: parsed.role || 'Lead Engineer',
           thumbnail: parsed.thumbnail || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80',
           overview: parsed.overview || 'Engineered responsive full-stack system with modular architecture.',
-          techStack: parsed.techStack || [{ name: 'TypeScript', category: 'Language' }, { name: 'React', category: 'Frontend' }],
+          techStack: parsed.techStack || [{ name: 'JavaScript', category: 'Language' }],
           keyFeatures: parsed.keyFeatures || ['Modular reactive state', 'Optimized bundle size'],
           status: parsed.status || 'Active',
           ...parsed,
-        } as Project);
+        });
       }
     } catch {
-      // Graceful fallback for non-json
+      // Ignore parse errors
     }
   }
 
@@ -157,21 +215,17 @@ export function getAllProjects(explicitProjects: Project[]): Project[] {
 }
 
 // ============================================================================
-// 3. AUTOMATIC INTERDISCIPLINARY WORK DETECTION & TRACKING
+// 4. AUTOMATIC INTERDISCIPLINARY WORK DETECTION
 // ============================================================================
-
-/**
- * Auto-discovers cross-disciplinary entries from /src/content/interdisciplinary/
- */
-export function getAllInterdisciplinary(explicitItems: InterdisciplinaryItem[]): InterdisciplinaryItem[] {
+export function getAllInterdisciplinary(explicitItems = []) {
   const interModules = import.meta.glob('/src/content/interdisciplinary/**/*.{json,md}', {
     eager: true,
     query: '?raw',
     import: 'default',
-  }) as Record<string, string>;
+  });
 
   const existingIds = new Set(explicitItems.map(i => i.id));
-  const autoItems: InterdisciplinaryItem[] = [];
+  const autoItems = [];
 
   for (const [path, rawContent] of Object.entries(interModules)) {
     if (typeof rawContent !== 'string') continue;
@@ -179,24 +233,25 @@ export function getAllInterdisciplinary(explicitItems: InterdisciplinaryItem[]):
     const id = 'auto-inter-' + filename.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
     if (existingIds.has(id)) continue;
+    existingIds.add(id);
 
     try {
       if (path.endsWith('.json')) {
-        const parsed = JSON.parse(rawContent) as Partial<InterdisciplinaryItem>;
+        const parsed = JSON.parse(rawContent);
         autoItems.push({
           id: parsed.id || id,
           title: parsed.title || filename.replace(/[_-]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
           disciplines: parsed.disciplines || ['Software Engineering', 'Fine Art'],
           tagline: parsed.tagline || 'Cross-disciplinary research and design.',
           description: parsed.description || 'Exploring intersections between disciplines.',
-          technologies: parsed.technologies || ['TypeScript', 'Design Systems'],
+          technologies: parsed.technologies || ['JavaScript', 'Design Systems'],
           keyHighlights: parsed.keyHighlights || ['Cross-disciplinary synthesis'],
-          badgeColor: parsed.badgeColor || 'from-indigo-500 to-purple-500',
+          badgeColor: parsed.badgeColor || 'border-indigo-500/40 text-indigo-300 bg-indigo-950/40',
           ...parsed,
-        } as InterdisciplinaryItem);
+        });
       }
     } catch {
-      // Graceful fallback
+      // Ignore parse errors
     }
   }
 

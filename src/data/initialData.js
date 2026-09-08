@@ -2,61 +2,23 @@
  * ============================================================================
  * SINGLE SOURCE OF TRUTH: PORTFOLIO CONTENT & DATA
  * ============================================================================
- * 
- * This file contains the default portfolio entries for all sections:
- * 1. ARTWORKS_DATA          -> Visual Art & Design gallery items
- * 2. PROJECTS_DATA          -> Software Engineering & Systems projects
- * 3. ENGINEERING_SKILLS     -> Core technical competencies matrix
- * 4. WRITING_POSTS_DATA     -> Essays, publications, and short stories
- * 5. INTERDISCIPLINARY_DATA -> Cross-discipline engineering/art/writing projects
- * 
- * ----------------------------------------------------------------------------
- * HOW TO ADD YOUR OWN CONTENT:
- * 1. Copy the commented template block located under each section.
- * 2. Paste it into the corresponding array below.
- * 3. Replace the placeholder values with your real project info, images, or texts!
- * ----------------------------------------------------------------------------
  */
 
-import { Artwork, Project, WritingPost, EngineeringSkill, InterdisciplinaryItem } from '../types';
-import { PROFILE } from './profile';
+import { PROFILE } from './profile.js';
 
 // ============================================================================
 // 1. VISUAL ART & DESIGN GALLERY DATA (ARTWORKS_DATA)
 // ============================================================================
-/**
- * In the Art Gallery:
- * - REQUIRED: `id`, `imageUrl`, and `category`
- * - OPTIONAL: `title`, `year`, `medium`, `dimensions`, `description`, `story`, `tags`, `aspectRatio`
- * 
- * Allowed categories:
- * 'Digital Painting' | 'Ink & Mixed Media' | 'Chinese Painting' | 'Book Design' | 'Website Design'
- *
- * ----------------------------------------------------------------------------
- * COPY & PASTE THIS TEMPLATE TO ADD MORE ARTWORKS:
- * ----------------------------------------------------------------------------
- * {
- *   id: 'art-02',
- *   imageUrl: 'https://your-image-url.jpg',                 // Required: Image URL or local path
- *   category: 'Chinese Painting',                         // Required: Category name
- *   title: 'My Artwork Title',                             // Optional: Title (omit if untitled)
- *   year: '2024',                                          // Optional: Year created
- *   medium: 'Traditional Ink on Xuan Paper',               // Optional: Medium / Tools
- *   dimensions: '68 x 138 cm',                             // Optional: Dimensions
- *   description: 'Short summary for gallery cards',        // Optional: Card description
- *   story: 'Full artistic concept or backstory',           // Optional: Concept / Story
- *   aspectRatio: 'portrait',                               // Optional: 'portrait' | 'landscape' | 'square'
- *   tags: ['Ink', 'Traditional', 'Landscape'],             // Optional: Search tags
- * },
- */
-export const ARTWORKS_DATA: Artwork[] = [
+export const ARTWORKS_DATA = [
   {
     id: 'berry-drink',
     imageUrl: '/art/2026/berry_drink.png',
     category: 'Digital Painting',
     title: 'Berry Drink',
     year: '2026',
-    // All other fields (medium, dimensions, description, story, tags) are completely optional
+    medium: 'Digital Painting',
+    description: 'Refreshing layered berry beverage illustration with delicate fruit textures.',
+    featured: true,
   },
   {
     id: 'art-01',
@@ -77,55 +39,7 @@ export const ARTWORKS_DATA: Artwork[] = [
 // ============================================================================
 // 2. CODING & SOFTWARE PROJECTS (PROJECTS_DATA)
 // ============================================================================
-/**
- * Clicking any project card in the software gallery opens a full-screen
- * case study lightbox modal with architecture breakdowns and code samples.
- * 
- * Allowed categories:
- * 'Web Applications' | 'Creative Coding' | 'Developer Tools' | 'ML Models'
- *
- * ----------------------------------------------------------------------------
- * COPY & PASTE THIS TEMPLATE TO ADD MORE SOFTWARE PROJECTS:
- * ----------------------------------------------------------------------------
- * {
- *   id: 'proj-02',
- *   title: 'Project Name',
- *   tagline: 'One-sentence elevator pitch describing what the project does.',
- *   category: 'Web Applications',
- *   year: '2024',
- *   role: 'Lead Software Engineer',
- *   thumbnail: 'https://your-thumbnail-url.jpg',
- *   coverImage: 'https://your-modal-banner.jpg',           // Optional
- *   liveDemoUrl: 'https://your-live-demo.com',             // Optional
- *   githubUrl: 'https://github.com/yourhandle/repo',       // Optional
- *   overview: 'Comprehensive paragraph explaining the project architecture and purpose.',
- *   problem: 'The core engineering challenge, latency issue, or product gap addressed.',
- *   solution: 'How you engineered the solution using specific libraries and patterns.',
- *   architecture: [
- *     'Bullet point 1 detailing system design',
- *     'Bullet point 2 detailing data pipeline',
- *     'Bullet point 3 detailing frontend or worker layer',
- *   ],
- *   techStack: [
- *     { name: 'TypeScript', category: 'Language' },
- *     { name: 'React', category: 'Frontend' },
- *     { name: 'Node.js', category: 'Backend' },
- *   ],
- *   keyFeatures: [
- *     'Key highlight feature 1',
- *     'Key highlight feature 2',
- *     'Key highlight feature 3',
- *   ],
- *   codeSnippet: {
- *     language: 'typescript',
- *     filename: 'storageEngine.ts',
- *     code: `// Your highlighted code snippet here\nexport function example() {\n  return true;\n}`,
- *   },
- *   interactiveDemoType: 'terminal-sim', // Optional: 'terminal-sim' | 'particles' | 'shader-canvas'
- *   featured: true,
- * },
- */
-export const PROJECTS_DATA: Project[] = [
+export const PROJECTS_DATA = [
   {
     id: 'proj-01',
     title: 'Chronosync Workspace',
@@ -144,11 +58,10 @@ export const PROJECTS_DATA: Project[] = [
       'Origin Private File System (OPFS) storage pipeline with binary block indexing',
       'Conflict-free Replicated Data Types (Yjs/CRDT) state layer for conflict-free merging',
       'Web Workers background thread for non-blocking document indexing and full-text search',
-      'React 19 + Tailwind CSS frontend interface with smooth virtualization',
+      'Fast modern web frontend interface with smooth virtualization',
     ],
     techStack: [
-      { name: 'TypeScript', category: 'Language' },
-      { name: 'React 19', category: 'Frontend' },
+      { name: 'JavaScript', category: 'Language' },
       { name: 'OPFS', category: 'Storage' },
       { name: 'Web Workers', category: 'Performance' },
       { name: 'Tailwind CSS', category: 'Styling' },
@@ -160,10 +73,10 @@ export const PROJECTS_DATA: Project[] = [
       'End-to-end client-side encryption for sensitive user notes',
     ],
     codeSnippet: {
-      language: 'typescript',
-      filename: 'storageEngine.ts',
+      language: 'javascript',
+      filename: 'storageEngine.js',
       code: `// OPFS High-Throughput Storage Access
-export async function writeDocumentBlock(docId: string, payload: Uint8Array): Promise<number> {
+export async function writeDocumentBlock(docId, payload) {
   const root = await navigator.storage.getDirectory();
   const fileHandle = await root.getFileHandle(\`doc_\${docId}.bin\`, { create: true });
   const syncHandle = await fileHandle.createSyncAccessHandle();
@@ -187,77 +100,41 @@ export async function writeDocumentBlock(docId: string, payload: Uint8Array): Pr
 // ============================================================================
 // 3. TECHNICAL SKILLS MATRIX (ENGINEERING_SKILLS)
 // ============================================================================
-/**
- * Categorized technical competencies displayed in the Software & Systems Skills Matrix.
- * 
- * ----------------------------------------------------------------------------
- * COPY & PASTE THIS TEMPLATE TO ADD MORE SKILLS:
- * ----------------------------------------------------------------------------
- * {
- *   category: 'Languages & Core',  // Category: 'Languages & Core' | 'Frontend & Architecture' | 'Graphics & Visual Computing' | 'Backend & Infrastructure' | 'Developer Tooling & DevOps'
- *   name: 'Rust & WebAssembly',
- *   level: 'Proficient',           // 'Advanced' | 'Proficient' | 'Intermediate'
- *   focus: 'Memory safety, Tokio async, SIMD vectorization',
- *   tags: ['Rust', 'Wasm', 'SIMD'],
- * },
- */
-export const ENGINEERING_SKILLS: EngineeringSkill[] = [
+export const ENGINEERING_SKILLS = [
   {
     category: 'Languages & Core',
-    name: 'TypeScript & JavaScript',
+    name: 'Python, C++ & JavaScript',
     level: 'Advanced',
-    focus: 'ESNext, Strict Typing, Web APIs, Event Loop, Performance Profiling',
-    tags: ['TypeScript', 'JavaScript', 'ESNext', 'Web APIs'],
+    focus: 'Modern Standards, Systems Programming, Web APIs, Event Loop, Performance Profiling',
+    tags: ['Python', 'C++', 'JavaScript', 'SQL'],
   },
   {
     category: 'Frontend & Architecture',
-    name: 'Modern Web & UI',
+    name: 'Modern Web & Systems',
     level: 'Advanced',
-    focus: 'React 19, Next.js, Vite, Tailwind CSS, State Management, Responsive Design',
-    tags: ['React', 'Next.js', 'Vite', 'Tailwind CSS'],
+    focus: 'Vite, Tailwind CSS, State Management, Responsive Design, OPFS, Web Workers',
+    tags: ['Vite', 'Tailwind CSS', 'Web Workers', 'OPFS'],
   },
   {
     category: 'Graphics & Visual Computing',
-    name: 'Creative Graphics & WebGL',
-    level: 'Intermediate',
-    focus: 'WebGL 2.0, GLSL Shaders, Three.js, Canvas 2D API, Raymarching',
-    tags: ['WebGL', 'GLSL', 'Three.js', 'Canvas API'],
+    name: 'Computer Vision & Creative Graphics',
+    level: 'Advanced',
+    focus: 'WebGL 2.0, GLSL Shaders, 2D & 3D Vision, Canvas 2D API, Raymarching',
+    tags: ['WebGL', 'GLSL', 'Computer Vision', 'Canvas API'],
   },
   {
     category: 'Backend & Infrastructure',
-    name: 'APIs & Data Layers',
+    name: 'Distributed Infrastructure & ML Pipelines',
     level: 'Proficient',
-    focus: 'Node.js, Express, REST & GraphQL APIs, SQLite, PostgreSQL, Docker',
-    tags: ['Node.js', 'Express', 'SQL', 'Docker'],
+    focus: 'Distributed Systems, Cloud Native, ML Pipelines, REST & GraphQL APIs, Docker',
+    tags: ['ML Pipelines', 'Distributed', 'Docker', 'Cloud Native'],
   },
 ];
 
 // ============================================================================
 // 4. WRITING GALLERY (WRITING_POSTS_DATA)
 // ============================================================================
-/**
- * Essays, publications, and short fiction with distraction-free reader mode.
- * 
- * Allowed categories:
- * 'Essays' | 'Short Fiction'
- *
- * ----------------------------------------------------------------------------
- * COPY & PASTE THIS TEMPLATE TO ADD MORE WRITING POSTS:
- * ----------------------------------------------------------------------------
- * {
- *   id: 'essay-02',
- *   title: 'Your Article Title',
- *   subtitle: 'A thoughtful subtitle summarizing the piece.',
- *   date: 'April 2024',
- *   category: 'Essays',                                   // 'Essays' | 'Short Fiction'
- *   excerpt: 'A short 2-3 sentence summary that appears on the preview card.',
- *   tags: ['Design', 'Philosophy', 'Craft'],
- *   coverImage: 'https://your-cover-image.jpg',           // Optional
- *   quote: 'A highlighted pull quote from the article.', // Optional
- *   content: `## First Heading\n\nYour article content written in standard Markdown.\n\n### Subheading\n\nMore paragraphs of thought...`,
- * },
- */
-export const WRITING_POSTS_DATA: WritingPost[] = [
+export const WRITING_POSTS_DATA = [
   {
     id: 'essay-01',
     title: 'The Philosophy of Emptiness: Liubai in Modern Interface Design',
@@ -298,30 +175,7 @@ As builders of software and creators of art, our highest duty is not to fill eve
 // ============================================================================
 // 5. INTERDISCIPLINARY WORK (INTERDISCIPLINARY_DATA)
 // ============================================================================
-/**
- * Highlights cross-disciplinary projects where coding, art, and writing converge.
- * 
- * ----------------------------------------------------------------------------
- * COPY & PASTE THIS TEMPLATE TO ADD MORE INTERDISCIPLINARY WORKS:
- * ----------------------------------------------------------------------------
- * {
- *   id: 'inter-02',
- *   title: 'Project Title',
- *   disciplines: ['Software Engineering', 'Fine Art', 'ML Research'],
- *   tagline: 'Short description of how the disciplines intersect.',
- *   description: 'Detailed paragraph on the interdisciplinary approach and methods.',
- *   projectId: 'proj-01',                               // Optional: links to a project ID above
- *   badgeColor: 'border-cyan-500/40 text-cyan-300 bg-cyan-950/40',
- *   pillClass: 'bubbly-pill-prog',                      // 'bubbly-pill-prog' | 'bubbly-pill-artist' | 'bubbly-pill-writer' | 'bubbly-pill-multi'
- *   technologies: ['TypeScript', 'WebGL', 'Art Theory'],
- *   keyHighlights: [
- *     'Highlight point 1',
- *     'Highlight point 2',
- *     'Highlight point 3',
- *   ],
- * },
- */
-export const INTERDISCIPLINARY_DATA: InterdisciplinaryItem[] = [
+export const INTERDISCIPLINARY_DATA = [
   {
     id: 'anthology-obsidian-review',
     title: 'The Obsidian Review — Annual Anthology',
