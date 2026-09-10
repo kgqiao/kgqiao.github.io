@@ -414,14 +414,23 @@ function renderAboutSection() {
 
             <div class="flex-1 flex items-center justify-center py-2 relative">
               <div class="absolute w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-3xl bg-gradient-to-tr from-emerald-500/30 via-rose-500/30 to-amber-500/30 blur-xl opacity-60 animate-breathing-halo pointer-events-none"></div>
-              <div class="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-3xl overflow-hidden bg-neutral-950 border border-white/15 shadow-2xl p-[2px] bg-gradient-to-tr from-emerald-500/40 via-rose-500/40 to-amber-500/40 group z-10">
-                <div class="relative w-full h-full rounded-[22px] overflow-hidden">
+              <div class="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-3xl overflow-hidden bg-neutral-950 border border-white/15 shadow-2xl p-[2px] bg-gradient-to-tr from-emerald-500/40 via-rose-500/40 to-amber-500/40 group z-10 flex items-center justify-center">
+                <div class="relative w-full h-full rounded-[22px] overflow-hidden bg-gradient-to-br from-neutral-900 via-neutral-950 to-neutral-900 flex flex-col items-center justify-center p-6 text-center select-none">
+                  <!-- Profile picture commented out for now; will add photo later
                   <img
                     src="${PROFILE.avatarUrl}"
                     alt="${PROFILE.name}"
                     draggable="false"
                     class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 select-none pointer-events-none"
                   />
+                  -->
+                  <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-emerald-400 via-rose-400 to-amber-400 p-[1.5px] shadow-lg mb-3">
+                    <div class="w-full h-full bg-neutral-950 rounded-[14px] flex items-center justify-center font-serif font-bold text-2xl sm:text-3xl text-neutral-100">
+                      ${PROFILE.initials}
+                    </div>
+                  </div>
+                  <span class="font-serif font-bold text-neutral-200 text-base sm:text-lg">${PROFILE.name}</span>
+                  <span class="text-xs font-mono text-neutral-400 mt-1">${PROFILE.tagline}</span>
                 </div>
               </div>
             </div>
@@ -1145,15 +1154,37 @@ function renderArtLightbox() {
 
         <!-- Center Image Stage with Protection Shield -->
         <div class="relative flex-1 w-full flex items-center justify-center overflow-hidden py-4 select-none">
-          <img
-            id="lightbox-art-img"
-            src="${art.imageUrl}"
-            alt="${art.title}"
-            draggable="false"
-            class="max-h-[75vh] max-w-full object-contain rounded-2xl shadow-2xl transition-transform duration-300 select-none pointer-events-none ${
-              state.isArtZoomed ? 'scale-150 cursor-zoom-out' : 'scale-100'
-            }"
-          />
+          ${art.imageUrl ? `
+            <img
+              id="lightbox-art-img"
+              src="${art.imageUrl}"
+              alt="${art.title}"
+              draggable="false"
+              onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+              class="max-h-[75vh] max-w-full object-contain rounded-2xl shadow-2xl transition-transform duration-300 select-none pointer-events-none ${
+                state.isArtZoomed ? 'scale-150 cursor-zoom-out' : 'scale-100'
+              }"
+            />
+            <div class="hidden max-h-[75vh] w-full max-w-md aspect-square flex flex-col items-center justify-center p-8 text-center bg-neutral-900/90 rounded-2xl border border-neutral-800 text-neutral-400">
+              <div class="w-16 h-16 rounded-2xl badge-art flex items-center justify-center text-art mb-4 shadow-lg">
+                ${icon('palette', 'w-8 h-8')}
+              </div>
+              <span class="font-serif font-bold text-neutral-100 text-xl">${art.title}</span>
+              <span class="text-xs font-mono text-rose-400 mt-2 font-medium">${art.category} (${art.year})</span>
+              ${art.medium ? `<span class="text-xs font-mono text-neutral-400 mt-1">${art.medium}</span>` : ''}
+              <p class="text-xs text-neutral-400 mt-4 leading-relaxed font-sans max-w-sm">High-resolution image file currently undergoing digitization or archiving.</p>
+            </div>
+          ` : `
+            <div class="max-h-[75vh] w-full max-w-md aspect-square flex flex-col items-center justify-center p-8 text-center bg-gradient-to-b from-neutral-900 to-neutral-950 rounded-2xl border border-neutral-800 text-neutral-400">
+              <div class="w-16 h-16 rounded-2xl badge-art flex items-center justify-center text-art mb-4 shadow-lg">
+                ${icon('palette', 'w-8 h-8')}
+              </div>
+              <span class="font-serif font-bold text-neutral-100 text-xl">${art.title}</span>
+              <span class="text-xs font-mono text-rose-400 mt-2 font-medium">${art.category} (${art.year})</span>
+              ${art.medium ? `<span class="text-xs font-mono text-neutral-400 mt-1">${art.medium}</span>` : ''}
+              <p class="text-xs text-neutral-400 mt-4 leading-relaxed font-sans max-w-sm">High-resolution image file currently undergoing digitization or archiving.</p>
+            </div>
+          `}
         </div>
 
         <!-- Bottom Description Bar -->

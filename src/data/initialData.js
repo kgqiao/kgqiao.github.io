@@ -6,6 +6,16 @@
 
 import { PROFILE } from './profile.js';
 
+// Bundle images directly through Vite so paths work in all deployments
+import mountainsImg from '../content/art/Chinese Painting/Mountains After Rain_Watermark.png';
+import mountainsPreview from '../content/art/Chinese Painting/Mountains After Rain_Watermark_preview.webp';
+import fallColorsImg from '../content/art/Chinese Painting/Fall Colors_Watermark.png';
+import fallColorsPreview from '../content/art/Chinese Painting/Fall Colors_Watermark_preview.webp';
+import forestsImg from '../content/art/Chinese Painting/Forests_Watermark.jpg';
+import forestsPreview from '../content/art/Chinese Painting/Forests_Watermark_preview.webp';
+import berryDrinkImg from '../../public/art/2026/berry_drink.png';
+import berryDrinkPreview from '../../public/art/2026/berry_drink_preview.webp';
+
 // ============================================================================
 // 1. VISUAL ART & DESIGN GALLERY DATA (ARTWORKS_DATA)
 // Categorized by: Chinese Painting, Digital Painting, Illustration
@@ -15,8 +25,8 @@ export const ARTWORKS_DATA = [
   {
     id: 'mountains-after-rain',
     title: 'Mountains After Rain',
-    imageUrl: '/src/content/art/Chinese Painting/Mountains After Rain_Watermark.png',
-    previewUrl: '/src/content/art/Chinese Painting/Mountains After Rain_Watermark_preview.webp',
+    imageUrl: mountainsImg,
+    previewUrl: mountainsPreview,
     category: 'Chinese Painting',
     year: '2024',
     medium: 'Traditional Chinese Ink & Mineral Pigments on Xuan Paper',
@@ -26,8 +36,8 @@ export const ARTWORKS_DATA = [
   {
     id: 'fall-colors',
     title: 'Fall Colors',
-    imageUrl: '/src/content/art/Chinese Painting/Fall Colors_Watermark.png',
-    previewUrl: '/src/content/art/Chinese Painting/Fall Colors_Watermark_preview.webp',
+    imageUrl: fallColorsImg,
+    previewUrl: fallColorsPreview,
     category: 'Chinese Painting',
     year: '2024',
     medium: 'Traditional Chinese Ink & Mineral Pigments on Xuan Paper',
@@ -37,8 +47,8 @@ export const ARTWORKS_DATA = [
   {
     id: 'forests',
     title: 'Forests',
-    imageUrl: '/src/content/art/Chinese Painting/Forests_Watermark.jpg',
-    previewUrl: '/src/content/art/Chinese Painting/Forests_Watermark_preview.webp',
+    imageUrl: forestsImg,
+    previewUrl: forestsPreview,
     category: 'Chinese Painting',
     year: '2023',
     medium: 'Traditional Chinese Ink on Xuan Paper',
@@ -122,8 +132,8 @@ export const ARTWORKS_DATA = [
   {
     id: 'berry-drink',
     title: 'Berry Drink',
-    imageUrl: '/art/2026/berry_drink.png',
-    previewUrl: '/art/2026/berry_drink_preview.webp',
+    imageUrl: berryDrinkImg,
+    previewUrl: berryDrinkPreview,
     category: 'Digital Painting',
     year: '2026',
     medium: 'Digital Painting',
