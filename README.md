@@ -217,3 +217,23 @@ The auto-discovery system automatically scans:
 - **Native Lazy Loading & Async Decoding**: All gallery images use `loading="lazy"` and `decoding="async"` to eliminate layout shifts.
 - **Lightbox Keyboard Navigation**: Press `Esc` to close any modal, and `←` / `→` arrow keys to cycle through works seamlessly.
 - **Zero Heavy Framework Overheads**: High-speed, responsive, accessible, and easily deployable anywhere.
+
+---
+
+## 8. Deploying to GitHub Pages
+
+The project is pre-configured to run flawlessly on GitHub Pages right after exporting! You can use either of the two standard methods:
+
+### Method A: Automated Deployment via GitHub Actions (Recommended)
+1. Create a new repository on GitHub and push the unzipped code.
+2. In your repository, go to **Settings** → **Pages**.
+3. Under **Build and deployment** → **Source**, select **GitHub Actions**.
+4. That's it! The included `.github/workflows/deploy.yml` will automatically build the site and deploy it. Whenever you push new changes or artworks, GitHub will update the live site automatically.
+
+### Method B: Direct Branch Deployment (via `/docs`)
+1. Create a repository on GitHub and push/upload the files.
+2. In your repository, go to **Settings** → **Pages**.
+3. Under **Build and deployment** → **Source**, select **Deploy from a branch**.
+4. Select branch **`main`** (or `master`) and choose the folder **`/docs`**, then click **Save**.
+5. Your live portfolio will be active in 1–2 minutes!
+
