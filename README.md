@@ -2,7 +2,7 @@
 
 A high-performance, single-source-of-truth portfolio uniting **Software Engineering**, **Visual Art & Design**, and **Writing & Essays**.
 
-Built with React 18, TypeScript, Tailwind CSS, Lucide icons, and modern responsive Bento-grid aesthetics powered by the **Studio Triad** palette (Emerald Jade, Cinnabar Rose, Warm Honey Amber).
+Built with **pure HTML5, CSS3, and Vanilla JavaScript (ESNext)**, Tailwind CSS, Lucide icons, and modern responsive Bento-grid aesthetics powered by the **Studio Triad** palette (Emerald Jade, Cinnabar Rose, Warm Honey Amber).
 
 ---
 
@@ -10,52 +10,47 @@ Built with React 18, TypeScript, Tailwind CSS, Lucide icons, and modern responsi
 
 1. [Quick Start & Architecture Overview](#1-quick-start--architecture-overview)
 2. [Single Source of Truth: Customizing Your Information](#2-single-source-of-truth-customizing-your-information)
-   - [Profile & Socials (`src/data/profile.ts`)](#profile--socials-srcdataprofilets)
+   - [Profile & Socials (`src/data/profile.js`)](#profile--socials-srcdataprofilejs)
    - [Dedicated Discipline Landing Pages & Optional Fields](#dedicated-discipline-landing-pages--optional-fields)
-3. [Populating Your Portfolio Content (`src/data/initialData.ts`)](#3-populating-your-portfolio-content-srcdatainitialdatats)
+3. [Populating Your Portfolio Content (`src/data/initialData.js`)](#3-populating-your-portfolio-content-srcdatainitialdatajs)
    - [1. Software Projects (`PROJECTS_DATA`)](#1-software-projects-projects_data)
    - [2. Visual Artworks (`ARTWORKS_DATA`) — Curated & View-Only](#2-visual-artworks-artworks_data--curated--view-only)
    - [3. Writing & Essays (`WRITING_POSTS_DATA`)](#3-writing--essays-writing_posts_data)
    - [4. Engineering Skills Matrix (`ENGINEERING_SKILLS`)](#4-engineering-skills-matrix-engineering_skills)
 4. [Color Palette: Studio Triad Guide](#4-color-palette-studio-triad-guide)
 5. [Individual Landing Pages for Recruiters & Curators](#5-individual-landing-pages-for-recruiters--curators)
-6. [Restoring the Convergence (4th) Section or Resume Later](#6-restoring-the-convergence-4th-section-or-resume-later)
+6. [Auto Content Detection (`src/data/autoContent.js`)](#6-auto-content-detection-srcdataautocontentjs)
 7. [Performance, Latency & Optimization](#7-performance-latency--optimization)
 
 ---
 
 ## 1. Quick Start & Architecture Overview
 
-The codebase is organized cleanly to separate data from presentation:
+The codebase is built with zero-virtual-DOM Vanilla JavaScript, separating data from presentation:
 
 ```
 src/
 ├── data/
-│   ├── profile.ts            <-- 🌟 MAIN SOURCE OF TRUTH (Name, Bio, Socials, Landing configs)
-│   └── initialData.ts        <-- 📦 PORTFOLIO DATA (Your Projects, Artworks, Essays)
-├── components/
-│   ├── Navbar.tsx            <-- Top floating bar with discipline tabs (Code, Art, Writing)
-│   ├── HeroSection.tsx       <-- Main page headline + 3 interactive discipline bento cards
-│   ├── AboutSection.tsx      <-- Profile photo, bio, and social links (GitHub, LinkedIn)
-│   ├── DisciplineLandingHero.tsx <-- Dedicated landing hero for #code, #art, #writing
-│   ├── ProgrammerSection.tsx <-- Software engineering gallery + lightbox modal + live sandboxes
-│   ├── ArtistSection.tsx     <-- Curated view-only art exhibition with zoomable lightbox
-│   ├── WriterSection.tsx     <-- Essays & fiction gallery with distraction-free reading modal
-│   ├── IntersectionSection.tsx <-- Cross-disciplinary convergence section (commented out, ready to use)
-│   ├── ResumeModal.tsx       <-- Interactive resume popup (code preserved, commented out)
-│   └── LoadingSkeleton.tsx   <-- Fast shimmering skeleton placeholders
-├── types.ts                  <-- Complete TypeScript definitions
-├── index.css                 <-- Studio Triad CSS variables & glassmorphism styling
-└── App.tsx                   <-- Core application routing and state
+│   ├── profile.js            <-- 🌟 MAIN SOURCE OF TRUTH (Name, Bio, Socials, Landing configs)
+│   ├── palettes.js           <-- 🎨 Color themes (Studio Triad, Celestial Atelier, etc.)
+│   ├── initialData.js        <-- 📦 PORTFOLIO DATA (Your Projects, Artworks, Essays)
+│   └── autoContent.js        <-- 🔍 Automatic file discovery & scanner for artworks/essays/projects
+├── content/
+│   ├── art/                  <-- Drop your artwork files here (organized by year or category)
+│   ├── writing/              <-- Drop markdown or text essays here
+│   ├── projects/             <-- Add json/markdown project specs here
+│   └── interdisciplinary/   <-- Add cross-disciplinary project specs here
+├── main.js                   <-- Fast, modular Vanilla JavaScript controller
+└── index.css                 <-- Studio Triad CSS variables & glassmorphism styling
 ```
 
 ---
 
 ## 2. Single Source of Truth: Customizing Your Information
 
-All your personal details, social links, and discipline landing headers are centralized in **`src/data/profile.ts`**. You only need to edit this one file to update your personal branding across the entire site.
+All personal details, social links, and discipline landing headers are centralized in **`src/data/profile.js`**. Edit this one file to update your personal branding across the entire site.
 
-### 🌟 When You Update `name` in `src/data/profile.ts`:
+### 🌟 When You Update `name` in `src/data/profile.js`:
 Updating `name` (e.g. from `"Katherine Qiao"` to `"Jane Doe"`):
 - **Brand Monogram Initials**: Automatically recalculated (e.g. `"KQ"` -> `"JD"`) unless manually overridden.
 - **Top Navigation Bar**: Brand logo & title update immediately.
@@ -65,10 +60,10 @@ Updating `name` (e.g. from `"Katherine Qiao"` to `"Jane Doe"`):
 - **Browser Tab & OpenGraph**: The HTML `<title>`, `<meta property="og:title">`, and descriptions dynamically sync.
 - **Footer**: Copyright year & name update.
 
-### Profile & Socials (`src/data/profile.ts`)
+### Profile & Socials (`src/data/profile.js`)
 
-```typescript
-export const PROFILE: ProfileConfig = {
+```javascript
+export const PROFILE = {
   // Update your name here:
   name: "Katherine Qiao",
   initials: "KQ", // Optional: leave empty or omit to auto-derive from name
@@ -97,15 +92,15 @@ export const PROFILE: ProfileConfig = {
 
 Every field in `PROFILE.disciplineLandings` is **completely optional** (`badge`, `role`, `tagline`, `overview`, `highlights`). If you leave any field undefined or empty, the UI cleanly adapts without showing blank spaces or breaking:
 
-```typescript
+```javascript
 disciplineLandings: {
   code: {
     badge: "01 Software & Systems",
     role: "Software Engineer & Systems Architect",
     tagline: "Building scalable and efficient software, data infrastructure, and ML pipelines.",
-    overview: "Specialized in Python, C++, Computer Vision, Machine Learning, Spatial AI and enterprise data insfrastructure.",
+    overview: "Specialized in Python, C++, Computer Vision, Machine Learning, Spatial AI and enterprise data infrastructure.",
     highlights: [
-      { label: "Core Stack", value: "Python · C++ · SQL · R" },
+      { label: "Core Stack", value: "Python · C++ · JavaScript · SQL" },
       { label: "Architecture", value: "Distributed · Cloud Native" },
       { label: "Specialties", value: "Machine Learning · 2D & 3D Vision · Backend" },
       { label: "Methodology", value: "Scalability · Zero Latency" }
@@ -140,31 +135,31 @@ disciplineLandings: {
 
 ---
 
-## 3. Populating Your Portfolio Content (`src/data/initialData.ts`)
+## 3. Populating Your Portfolio Content (`src/data/initialData.js`)
 
-To add, edit, or remove software projects, artworks, or essays, open **`src/data/initialData.ts`**:
+To add, edit, or remove software projects, artworks, or essays, open **`src/data/initialData.js`**:
 
 ### 1. Software Projects (`PROJECTS_DATA`)
-Add an object with `id`, `title`, `tagline`, `description`, `tags`, `architectureOverview`, `highlights`, and optional links (`githubUrl`, `liveDemoUrl`, `interactiveSandboxType`).
+Add an object with `id`, `title`, `tagline`, `overview`, `architecture`, `techStack`, `milestones`, and optional links (`githubUrl`, `liveDemoUrl`).
 
 ### 2. Visual Artworks (`ARTWORKS_DATA`) — Curated & View-Only
-Add an artwork item with `id`, `title`, `medium`, `year`, `dimensions`, `description`, `imageUrl`, `featured`, and `category`. The artwork gallery is strictly view-only for visitors with high-res zoomable lightboxes.
+Add an artwork item with `id`, `title`, `medium`, `year`, `dimensions`, `description`, `imageUrl`, `featured`, and `category`. The artwork gallery is view-only for visitors with high-res zoomable lightboxes.
 
 ### 3. Writing & Essays (`WRITING_POSTS_DATA`)
-Add an essay with `id`, `title`, `summary`, `readTime`, `publishedDate`, `category`, and `content` (Markdown formatted with headers, quotes, and paragraphs).
+Add an essay with `id`, `title`, `excerpt`, `readingTime`, `date`, `category`, and `content` (Markdown formatted with headers, quotes, and paragraphs).
 
 ---
 
 ## 4. Color Palette: 1-Line Easy Switcher & Guide
 
-Swapping palettes is now as simple as changing **one line of code** in **`src/data/profile.ts`** — no need to highlight, uncomment, or edit multiple CSS blocks!
+Swapping palettes is as simple as changing **one line of code** in **`src/data/profile.js`** — no need to highlight, uncomment, or edit multiple CSS blocks!
 
-### How to Switch Palettes in `src/data/profile.ts`:
+### How to Switch Palettes in `src/data/profile.js`:
 
-Open **`src/data/profile.ts`** and set `palette:` to any of the 5 keys below:
+Open **`src/data/profile.js`** and set `palette:` to any of the 5 keys below:
 
-```typescript
-const RAW_PROFILE_DATA: ProfileConfig = {
+```javascript
+export const PROFILE = {
   name: 'Katherine Qiao',
   
   // 🌟 1-Line Palette Switcher:
@@ -186,7 +181,7 @@ All CSS variables (`--code-*`, `--art-*`, `--writing-*`), ombre gradients, bento
 | **`'nordic-terracotta'`** | Nordic Pine (`#0f766e`) | Terracotta Ruby (`#be123c`) | Tuscan Sand (`#b45309`) |
 | **`'indigo-vermilion'`** | Prussian Indigo (`#4f46e5`) | Vermilion Flame (`#dc2626`) | Solar Amber (`#ca8a04`) |
 
-*(Custom color values and default fallbacks can also be inspected or customized in `src/data/palettes.ts` and `src/index.css`)*
+*(Custom color values and default fallbacks can also be inspected or customized in `src/data/palettes.js` and `src/index.css`)*
 
 ---
 
@@ -206,20 +201,19 @@ Each landing page features:
 
 ---
 
-## 6. Restoring the Convergence (4th) Section or Resume Later
+## 6. Auto Content Detection (`src/data/autoContent.js`)
 
-- **Convergence Section**: The code for the 4th discipline is fully maintained in `src/components/IntersectionSection.tsx` and `src/data/initialData.ts`. To reactivate it:
-  1. **`src/components/Navbar.tsx`**: Uncomment the `04 Interdisciplinary` tab button.
-  2. **`src/components/HeroSection.tsx`**: Uncomment Card 4 (Discipline 04) and switch the grid class from `md:grid-cols-3` to `lg:grid-cols-4`.
-  3. **`src/App.tsx`**: Uncomment the `<IntersectionSection />` component call in the main view and the `activeView === 'interdisciplinary'` view.
-  4. **`src/components/DisciplineLandingHero.tsx`**: Uncomment the `04 Convergence` button pill in the discipline switcher.
-- **Interactive Resume Modal**: The full resume modal code is preserved in `src/components/ResumeModal.tsx`. To re-enable the Resume button, uncomment the resume button elements in `Navbar.tsx` and `DisciplineLandingHero.tsx`.
+The auto-discovery system automatically scans:
+- **Artworks**: Automatically loads images dropped into `src/content/art/` or `public/art/`.
+- **Writing**: Automatically parses Markdown or text files dropped into `src/content/writing/`.
+- **Projects**: Automatically parses JSON or Markdown dropped into `src/content/projects/`.
 
 ---
 
 ## 7. Performance, Latency & Optimization
 
-- **Fast First Paint**: Core styles and font stacks are streamlined to load instantly without heavy asset blocking.
-- **Native Lazy Loading & Async Decoding**: All gallery images use `loading="lazy"` and `decoding="async"` alongside shimmering SVG skeletons to eliminate layout shifts.
+- **Pure HTML, CSS, and JavaScript**: Zero virtual-DOM overhead, executing directly on the browser's native DOM engine.
+- **Fast First Paint**: Core styles and font stacks load instantly without heavy asset blocking.
+- **Native Lazy Loading & Async Decoding**: All gallery images use `loading="lazy"` and `decoding="async"` to eliminate layout shifts.
 - **Lightbox Keyboard Navigation**: Press `Esc` to close any modal, and `←` / `→` arrow keys to cycle through works seamlessly.
-- **Zero Heavy External SDKs**: The app runs entirely in client-side TypeScript with zero unnecessary runtime overhead.
+- **Zero Heavy Framework Overheads**: High-speed, responsive, accessible, and easily deployable anywhere.

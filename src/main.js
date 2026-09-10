@@ -38,6 +38,7 @@ const state = {
   activeView: 'main', // 'main' | 'code' | 'art' | 'writing'
   codeCategory: 'All',
   artCategory: 'All',
+  artVisibleCount: 6,
   writingCategory: 'All',
   writingSearch: '',
   activeProject: null,
@@ -150,10 +151,10 @@ function renderNavbar() {
               </div>
             </div>
             <div>
-              <span class="font-serif font-bold text-base sm:text-lg text-neutral-100 group-hover:text-white block tracking-tight">
+              <span class="font-serif font-bold text-lg sm:text-xl text-neutral-100 group-hover:text-white block tracking-tight">
                 ${PROFILE.name}
               </span>
-              <span class="text-[10px] sm:text-xs text-neutral-400 font-mono block -mt-0.5">
+              <span class="text-[10px] sm:text-xs text-neutral-400 font-sans tracking-wider uppercase block -mt-0.5">
                 ${PROFILE.tagline}
               </span>
             </div>
@@ -199,12 +200,13 @@ function renderNavbar() {
                   : 'text-neutral-400 hover:text-writing hover:bg-writing-muted'
               }"
             >
-              ${icon('pen-tool', 'w-3.5 h-3.5 mr-1.5')} Writing & Essays
+              ${icon('pen-tool', 'w-3.5 h-3.5 mr-1.5')} Essays & Fiction
             </button>
           </div>
 
-          <!-- Actions: Resume Modal Button -->
+          <!-- Actions & Mobile Menu -->
           <div class="flex items-center gap-2.5">
+            <!-- Resume / CV button commented out per request
             <button
               id="open-resume-btn"
               class="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-neutral-200 hover:text-white text-xs font-mono font-medium transition-all shadow-sm hover:scale-105 active:scale-95"
@@ -212,6 +214,7 @@ function renderNavbar() {
               ${icon('sparkles', 'w-3.5 h-3.5 text-amber-400')}
               <span>Resume / CV</span>
             </button>
+            -->
 
             <!-- Mobile Hamburger Toggle -->
             <button
@@ -231,10 +234,12 @@ function renderNavbar() {
         <button data-nav="main" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-mono ${state.activeView === 'main' ? 'bg-neutral-800 text-white font-bold' : 'text-neutral-300'}">All Overview</button>
         <button data-nav="code" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-mono ${state.activeView === 'code' ? 'btn-pill-code-active' : 'text-neutral-300'}">01 · Software & Systems</button>
         <button data-nav="art" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-mono ${state.activeView === 'art' ? 'btn-pill-art-active' : 'text-neutral-300'}">02 · Visual Art & Design</button>
-        <button data-nav="writing" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-mono ${state.activeView === 'writing' ? 'btn-pill-writing-active' : 'text-neutral-300'}">03 · Writing & Essays</button>
+        <button data-nav="writing" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-mono ${state.activeView === 'writing' ? 'btn-pill-writing-active' : 'text-neutral-300'}">03 · Essays & Fiction</button>
+        <!-- Mobile Resume commented out
         <button id="mobile-open-resume" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-mono text-amber-300 bg-amber-950/30 border border-amber-500/30 flex items-center gap-2">
           ${icon('sparkles', 'w-3.5 h-3.5')} View Resume / CV
         </button>
+        -->
       </div>
     </nav>
   `;
@@ -257,8 +262,8 @@ function renderHeroSection() {
 
         <!-- Main Headline -->
         <div class="text-center max-w-4xl mx-auto mb-8 sm:mb-12">
-          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-neutral-100 mb-3 sm:mb-4 leading-tight font-serif">
-            Portfolio of <span class="ombre-text-brand font-serif font-bold">${PROFILE.name}</span>
+          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-display font-medium tracking-tight text-neutral-100 mb-3 sm:mb-4 leading-tight">
+            Portfolio of <span class="ombre-text-brand font-display font-semibold">${PROFILE.name}</span>
           </h1>
           <p class="text-sm sm:text-lg text-neutral-300 max-w-2xl mx-auto leading-relaxed px-2">
             ${PROFILE.headline}
@@ -279,19 +284,19 @@ function renderHeroSection() {
                   ${icon('terminal', 'w-5 h-5 sm:w-6 sm:h-6')}
                 </div>
                 <span class="bubbly-pill-prog text-xs font-mono px-3 py-1 rounded-full font-bold shadow-sm">
-                  01 · ${projects.length} Systems
+                  01 · Software & Systems
                 </span>
               </div>
               <h3 class="text-lg sm:text-xl font-bold text-neutral-100 group-hover:text-code transition-colors mb-2 font-mono">
                 Software & Systems
               </h3>
               <p class="text-xs sm:text-sm text-neutral-300 mb-6 leading-relaxed">
-                Full-stack web applications, WebGL fluid shaders, developer tools, and machine learning models.
+                Full-stack web applications, graphics shaders, developer tools, and machine learning models.
               </p>
             </div>
             <div class="flex items-center justify-between pt-4 border-t border-code text-xs text-code font-bold font-mono">
               <span class="flex items-center gap-1.5">
-                ${icon('code', 'w-4 h-4')} View Code & Systems
+                ${icon('code', 'w-4 h-4')} View Code & GitHub
               </span>
               ${icon('arrow-right', 'w-4 h-4 group-hover:translate-x-1.5 transition-transform')}
             </div>
@@ -308,14 +313,14 @@ function renderHeroSection() {
                   ${icon('palette', 'w-5 h-5 sm:w-6 sm:h-6')}
                 </div>
                 <span class="bubbly-pill-artist text-xs font-mono px-3 py-1 rounded-full font-bold shadow-sm">
-                  02 · ${artworks.length} Works
+                  02 · ${artworks.length} Artworks
                 </span>
               </div>
-              <h3 class="text-lg sm:text-xl font-bold text-neutral-100 group-hover:text-art transition-colors mb-2 font-serif">
+              <h3 class="text-lg sm:text-xl font-serif font-bold text-neutral-100 group-hover:text-art transition-colors mb-2">
                 Visual Art & Design
               </h3>
               <p class="text-xs sm:text-sm text-neutral-300 mb-6 leading-relaxed">
-                Chinese ink paintings on Xuan paper, digital paintings, ink & mixed media, and design systems.
+                Chinese ink paintings on Xuan paper, digital paintings, and stylized illustration series.
               </p>
             </div>
             <div class="flex items-center justify-between pt-4 border-t border-art text-xs text-art font-bold font-mono">
@@ -337,14 +342,14 @@ function renderHeroSection() {
                   ${icon('pen-tool', 'w-5 h-5 sm:w-6 sm:h-6')}
                 </div>
                 <span class="bubbly-pill-writer text-xs font-mono px-3 py-1 rounded-full font-bold shadow-sm">
-                  03 · ${writings.length} Essays
+                  03 · Coming Soon
                 </span>
               </div>
-              <h3 class="text-lg sm:text-xl font-bold text-neutral-100 group-hover:text-writing transition-colors mb-2 font-serif">
-                Writing & Essays
+              <h3 class="text-lg sm:text-xl font-serif font-bold text-neutral-100 group-hover:text-writing transition-colors mb-2">
+                Essays & Fiction
               </h3>
               <p class="text-xs sm:text-sm text-neutral-300 mb-6 leading-relaxed">
-                Critical essays, technical treatises, and short speculative fiction exploring aesthetics and systems.
+                Various writing works.
               </p>
             </div>
             <div class="flex items-center justify-between pt-4 border-t border-writing text-xs text-writing font-bold font-mono">
@@ -500,13 +505,14 @@ function renderAboutSection() {
                   ${icon('pen-tool', 'w-3.5 h-3.5')}
                 </div>
                 <div>
-                  <div class="text-xs font-mono font-bold text-neutral-200">Writing & Literary Work</div>
-                  <div class="text-xs text-neutral-400 mt-0.5">Critical essays on interface philosophy, art treatises, and speculative fiction.</div>
+                  <div class="text-xs font-mono font-bold text-neutral-200">Essays and Fiction</div>
+                  <div class="text-xs text-neutral-400 mt-0.5">Various writing works.</div>
                 </div>
               </div>
             </div>
 
-            <!-- Resume Button -->
+            <!-- Resume / CV Button (Commented out per request) -->
+            <!--
             <div class="pt-2">
               <button
                 id="about-resume-btn"
@@ -516,6 +522,7 @@ function renderAboutSection() {
                 <span>View Full Curriculum Vitae / Resume</span>
               </button>
             </div>
+            -->
 
           </div>
 
@@ -555,24 +562,50 @@ function renderProgrammerSection() {
           </p>
         </div>
 
-        <!-- Filter Pills -->
-        <div class="flex flex-wrap gap-2">
-          ${categories.map(cat => `
-            <button
-              data-code-cat="${cat}"
-              class="px-3.5 py-1.5 rounded-xl text-xs font-mono transition-all ${
-                state.codeCategory === cat
-                  ? 'btn-pill-code-active'
-                  : 'bg-neutral-900/90 text-neutral-400 hover:text-white border border-neutral-800'
-              }"
-            >
-              ${cat}
-            </button>
-          `).join('')}
+        <div>
+          <a
+            href="${PROFILE.social.github.url}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-mono font-bold text-xs transition-all shadow-md hover:scale-105"
+          >
+            ${icon('github', 'w-4 h-4')}
+            <span>GitHub @kgqiao</span>
+            ${icon('external-link', 'w-3 h-3')}
+          </a>
         </div>
       </div>
 
-      <!-- Project Cards Grid -->
+      <!-- Note Direct Linking to GitHub Site -->
+      <div class="bento-card spotlight-card bento-card-programmer rounded-3xl p-6 sm:p-10 border border-emerald-500/30 bg-neutral-950/80 relative overflow-hidden mb-8">
+        <div class="relative z-10 max-w-3xl space-y-4">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 text-xs font-mono font-semibold shadow-sm">
+            ${icon('terminal', 'w-3.5 h-3.5')}
+            <span>Active Repositories & Engineering Work</span>
+          </div>
+          <h3 class="text-2xl sm:text-3xl font-mono font-bold text-neutral-100">
+            Open Source & Software Engineering Repositories
+          </h3>
+          <p class="text-neutral-300 text-sm sm:text-base leading-relaxed font-sans">
+            Software engineering projects, systems architecture, machine learning pipelines, and developer tooling are hosted directly on GitHub. Explore source code, architecture diagrams, commit history, and active development at the link below:
+          </p>
+          <div class="pt-2 flex flex-wrap items-center gap-4">
+            <a
+              href="${PROFILE.social.github.url}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-mono font-bold text-xs sm:text-sm transition-all shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95"
+            >
+              ${icon('github', 'w-4 h-4')}
+              <span>Visit My GitHub Site (github.com/kgqiao)</span>
+              ${icon('external-link', 'w-3.5 h-3.5')}
+            </a>
+            <span class="text-xs font-mono text-neutral-400">Direct link to GitHub profile & public repositories</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project Cards Grid (Commented out per user request)
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
         ${filteredProjects.map(p => `
           <div
@@ -594,7 +627,6 @@ function renderProgrammerSection() {
                 ${p.tagline}
               </p>
 
-              <!-- Tech Stack Tags -->
               <div class="flex flex-wrap gap-1.5 mb-6">
                 ${(p.techStack || []).map(t => `
                   <span class="text-[11px] font-mono px-2.5 py-1 rounded-lg bg-neutral-900 border border-neutral-800 text-neutral-300">
@@ -613,8 +645,9 @@ function renderProgrammerSection() {
           </div>
         `).join('')}
       </div>
+      -->
 
-      <!-- Technical Skills Matrix -->
+      <!-- Core technical competencies commented out for now
       <div class="mt-14 bento-card rounded-3xl p-6 sm:p-8 space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-neutral-800/80 pb-4">
           <div>
@@ -661,8 +694,9 @@ function renderProgrammerSection() {
           `).join('')}
         </div>
       </div>
+      -->
 
-      <!-- In-Browser Interactive Terminal Simulator -->
+      <!-- Sandbox terminal box commented out for now
       <div class="mt-8 bento-card rounded-3xl p-5 sm:p-6 bg-neutral-950 border border-neutral-800 space-y-4">
         <div class="flex items-center justify-between border-b border-neutral-800/80 pb-3">
           <div class="flex items-center gap-2">
@@ -691,6 +725,7 @@ function renderProgrammerSection() {
           </button>
         </form>
       </div>
+      -->
 
     </section>
   `;
@@ -701,6 +736,8 @@ function renderArtistSection() {
   const filteredArtworks = state.artCategory === 'All'
     ? artworks
     : artworks.filter(a => a.category === state.artCategory);
+  const visibleArtworks = filteredArtworks.slice(0, state.artVisibleCount);
+  const hasMore = filteredArtworks.length > visibleArtworks.length;
 
   return `
     <section id="artist-gallery-section" class="py-10 md:py-16">
@@ -716,7 +753,7 @@ function renderArtistSection() {
             Curated Visual Art & Design Gallery
           </h2>
           <p class="text-neutral-400 text-sm sm:text-base mt-2 max-w-xl">
-            Selected works traversing traditional Chinese painting on Xuan paper, digital painting, ink & mixed media, and design systems.
+            Selected works traversing traditional Chinese painting on Xuan paper, digital painting, ink & mixed media, and illustration systems.
           </p>
         </div>
 
@@ -737,25 +774,45 @@ function renderArtistSection() {
         </div>
       </div>
 
-      <!-- Artwork Masonry / Grid -->
+      <!-- Artwork Masonry / Grid (Showing 6 at first glance) -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-        ${filteredArtworks.map(art => `
+        ${visibleArtworks.map(art => `
           <div
             data-open-art="${art.id}"
             class="group relative rounded-3xl overflow-hidden bento-card spotlight-card bento-card-artist cursor-pointer bg-neutral-950 border border-neutral-800/80 hover:border-art transition-all duration-300 hover:shadow-2xl flex flex-col"
           >
-            <!-- Image Frame -->
-            <div class="relative w-full aspect-square overflow-hidden bg-neutral-900">
-              <img
-                src="${art.imageUrl}"
-                alt="${art.title}"
-                loading="lazy"
-                draggable="false"
-                class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 select-none pointer-events-none"
-              />
+            <!-- Image Frame with Low Latency Preview and Fallback -->
+            <div class="relative w-full aspect-square overflow-hidden bg-neutral-900 flex items-center justify-center">
+              ${art.imageUrl ? `
+                <img
+                  src="${art.previewUrl || art.imageUrl}"
+                  alt="${art.title}"
+                  loading="lazy"
+                  decoding="async"
+                  draggable="false"
+                  onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+                  class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 select-none pointer-events-none"
+                />
+                <div class="hidden w-full h-full flex flex-col items-center justify-center p-6 text-center bg-neutral-900/90 text-neutral-400">
+                  <div class="w-10 h-10 rounded-xl badge-art flex items-center justify-center text-art mb-2">
+                    ${icon('palette', 'w-5 h-5')}
+                  </div>
+                  <span class="font-serif font-bold text-neutral-200 text-sm">${art.title}</span>
+                  <span class="text-[11px] font-mono text-neutral-400 mt-1">${art.category}</span>
+                </div>
+              ` : `
+                <div class="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-gradient-to-b from-neutral-900 to-neutral-950 text-neutral-400 border-b border-neutral-900/80">
+                  <div class="w-12 h-12 rounded-2xl badge-art flex items-center justify-center text-art mb-3 shadow-inner">
+                    ${icon('palette', 'w-6 h-6')}
+                  </div>
+                  <span class="font-serif font-bold text-neutral-200 text-base px-2">${art.title}</span>
+                  <span class="text-[11px] font-mono text-rose-400 mt-1.5 font-medium">${art.category}</span>
+                  <span class="text-[10px] font-mono text-neutral-400 mt-0.5">${art.medium || ''}</span>
+                </div>
+              `}
               <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
-                <span class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-white bg-neutral-900/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/20">
-                  ${icon('zoom-in', 'w-3.5 h-3.5 text-rose-400')} View Fullscreen Lightbox
+                <span class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-white bg-neutral-900/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/20 shadow-lg">
+                  ${icon('zoom-in', 'w-3.5 h-3.5 text-rose-400')} View Details
                 </span>
               </div>
             </div>
@@ -770,7 +827,7 @@ function renderArtistSection() {
                 <h3 class="text-lg sm:text-xl font-serif font-bold text-neutral-100 group-hover:text-art transition-colors">
                   ${art.title}
                 </h3>
-                ${art.description ? `<p class="text-xs text-neutral-400 mt-1.5 line-clamp-2">${art.description}</p>` : ''}
+                ${art.description ? `<p class="text-xs text-neutral-400 mt-1.5 line-clamp-2 font-sans">${art.description}</p>` : ''}
               </div>
 
               ${art.medium ? `
@@ -783,22 +840,24 @@ function renderArtistSection() {
         `).join('')}
       </div>
 
+      <!-- Load More Button (gradually show more) -->
+      ${hasMore ? `
+        <div class="flex flex-col items-center justify-center mt-12 gap-2">
+          <button
+            id="load-more-art-btn"
+            class="px-6 py-3 rounded-2xl bg-neutral-900 hover:bg-neutral-800 text-neutral-200 hover:text-white border border-neutral-700 text-xs font-mono font-bold flex items-center gap-2 transition-all hover:scale-105 shadow-lg active:scale-95 cursor-pointer"
+          >
+            ${icon('plus', 'w-4 h-4 text-rose-400')}
+            <span>See More Artworks (${visibleArtworks.length} of ${filteredArtworks.length})</span>
+          </button>
+        </div>
+      ` : ''}
+
     </section>
   `;
 }
 
 function renderWriterSection() {
-  const categories = ['All', ...new Set(writings.map(w => w.category).filter(Boolean))];
-  const filteredWritings = writings.filter(post => {
-    const matchesCat = state.writingCategory === 'All' || post.category === state.writingCategory;
-    const q = state.writingSearch.toLowerCase();
-    const matchesQuery = !q ||
-      post.title.toLowerCase().includes(q) ||
-      (post.subtitle && post.subtitle.toLowerCase().includes(q)) ||
-      (post.excerpt && post.excerpt.toLowerCase().includes(q));
-    return matchesCat && matchesQuery;
-  });
-
   return `
     <section id="writer-section" class="py-10 md:py-16">
       
@@ -807,89 +866,46 @@ function renderWriterSection() {
         <div>
           <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full badge-writing text-xs font-semibold uppercase tracking-wider mb-3 shadow-sm">
             ${icon('pen-tool', 'w-3.5 h-3.5')}
-            <span>Discipline 03 · Writing & Essays</span>
+            <span>Discipline 03 · Essays & Fiction</span>
           </div>
           <h2 class="text-3xl sm:text-4xl font-serif font-bold text-neutral-100 tracking-tight">
-            Essays & Literary Publications
+            Essays & Fiction
           </h2>
           <p class="text-neutral-400 text-sm sm:text-base mt-2 max-w-xl">
-            Critical essays on art history, interface philosophy, and speculative short fiction.
+            Various writing works.
           </p>
-        </div>
-
-        <!-- Filter Pills & Search -->
-        <div class="flex flex-col sm:flex-row gap-3">
-          <div class="relative">
-            <input
-              id="writing-search-input"
-              type="text"
-              placeholder="Search essays..."
-              value="${state.writingSearch}"
-              class="w-full sm:w-48 px-3 py-1.5 pl-8 rounded-xl bg-neutral-900 text-xs text-neutral-200 border border-neutral-800 outline-none focus:border-amber-500"
-            />
-            <span class="absolute left-2.5 top-2 text-neutral-500">
-              ${icon('search', 'w-3.5 h-3.5')}
-            </span>
-          </div>
-
-          <div class="flex flex-wrap gap-2">
-            ${categories.map(cat => `
-              <button
-                data-writing-cat="${cat}"
-                class="px-3.5 py-1.5 rounded-xl text-xs font-mono transition-all ${
-                  state.writingCategory === cat
-                    ? 'btn-pill-writing-active'
-                    : 'bg-neutral-900/90 text-neutral-400 hover:text-white border border-neutral-800'
-                }"
-              >
-                ${cat}
-              </button>
-            `).join('')}
-          </div>
         </div>
       </div>
 
-      <!-- Essay Cards Grid -->
+      <!-- Coming Soon Note -->
+      <div class="bento-card spotlight-card bento-card-writer rounded-3xl p-8 sm:p-12 border border-amber-500/30 bg-neutral-950/80 text-center relative overflow-hidden mb-8">
+        <div class="relative z-10 max-w-xl mx-auto space-y-4">
+          <div class="w-14 h-14 rounded-2xl badge-writing flex items-center justify-center text-amber-400 mx-auto shadow-lg shadow-amber-500/20">
+            ${icon('pen-tool', 'w-7 h-7')}
+          </div>
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-950/80 border border-amber-500/40 text-amber-400 text-xs font-mono font-semibold">
+            <span>Discipline 03 · Essays and Fiction</span>
+          </div>
+          <h3 class="text-2xl sm:text-4xl font-serif font-bold text-neutral-100">
+            Coming Soon!
+          </h3>
+          <!-- Commented out AI description per request
+          <p class="text-neutral-300 text-sm sm:text-base leading-relaxed font-sans max-w-lg mx-auto">
+            Essays on interface philosophy, classical Chinese art theory, and speculative short fiction are currently in preparation and will be published here soon.
+          </p>
+          -->
+        </div>
+      </div>
+
+      <!-- Current writing submissions commented out per user request
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-        ${filteredWritings.map(post => `
-          <div
-            data-open-writing="${post.id}"
-            class="bento-card spotlight-card bento-card-writer rounded-3xl p-6 sm:p-8 flex flex-col justify-between cursor-pointer group hover:scale-[1.01] hover:shadow-2xl transition-all"
-          >
-            <div>
-              <div class="flex items-center justify-between mb-4 text-xs font-mono">
-                <span class="px-3 py-1 rounded-full badge-writing text-writing font-bold">
-                  ${post.category}
-                </span>
-                <span class="text-neutral-400">${post.subtitle || post.readingTime || 'Essay'}</span>
-              </div>
-
-              <h3 class="text-xl sm:text-2xl font-serif font-bold text-neutral-100 group-hover:text-writing transition-colors mb-3">
-                ${post.title}
-              </h3>
-              <p class="text-sm text-neutral-300 leading-relaxed mb-6 font-serif">
-                ${post.excerpt}
-              </p>
-
-              <!-- Tags -->
-              <div class="flex flex-wrap gap-1.5 mb-6">
-                ${(post.tags || []).map(t => `
-                  <span class="text-[11px] font-mono px-2.5 py-1 rounded-lg bg-neutral-900 border border-neutral-800 text-neutral-400">
-                    ${t}
-                  </span>
-                `).join('')}
-              </div>
-            </div>
-
-            <div class="pt-4 border-t border-neutral-800/80 flex items-center justify-between text-xs font-mono text-writing font-bold">
-              <span class="flex items-center gap-1.5">
-                ${icon('book-open', 'w-4 h-4')} Open Distraction-Free Reader
-              </span>
-              ${icon('arrow-right', 'w-4 h-4 group-hover:translate-x-1.5 transition-transform')}
-            </div>
+        ${writings.map(post => `
+          <div data-open-writing="${post.id}" class="bento-card rounded-3xl p-6">
+            <h3>${post.title}</h3>
           </div>
         `).join('')}
       </div>
+      -->
 
     </section>
   `;
@@ -917,7 +933,7 @@ function renderDisciplineHero(discipline) {
           <span>${config.badge || discipline.toUpperCase()}</span>
         </div>
 
-        <h1 class="text-3xl sm:text-5xl font-bold tracking-tight text-neutral-100 ${discipline === 'code' ? 'font-mono' : 'font-serif'}">
+        <h1 class="text-3xl sm:text-5xl font-bold tracking-tight text-neutral-100 ${discipline === 'code' ? 'font-mono' : 'font-serif font-bold'}">
           ${config.title || PROFILE.name}
         </h1>
 
@@ -942,12 +958,29 @@ function renderDisciplineHero(discipline) {
         ` : ''}
 
         <div class="flex flex-wrap items-center gap-3 pt-2">
-          <button data-nav="main" class="px-4 py-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-xs font-mono text-neutral-300 hover:text-white flex items-center gap-1.5">
+          <button data-nav="main" class="px-4 py-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-xs font-mono text-neutral-300 hover:text-white flex items-center gap-1.5 transition-all">
             ${icon('arrow-left', 'w-3.5 h-3.5')} Return to All Overview
           </button>
+          ${discipline === 'code' ? `
+            <a
+              href="${PROFILE.social.github.url}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-neutral-950 text-xs font-mono font-bold flex items-center gap-1.5 transition-all hover:scale-105 shadow-md"
+            >
+              ${icon('github', 'w-3.5 h-3.5')} Visit GitHub @kgqiao ${icon('external-link', 'w-3 h-3')}
+            </a>
+          ` : ''}
+          ${discipline === 'writing' ? `
+            <div class="px-4 py-2 rounded-xl bg-amber-950/60 border border-amber-500/30 text-xs font-mono text-amber-300 flex items-center gap-1.5">
+              ${icon('sparkles', 'w-3.5 h-3.5 text-amber-400')} Essays and Fiction: Coming Soon!
+            </div>
+          ` : ''}
+          <!-- Resume / CV button commented out per request
           <button id="discipline-resume-btn" class="px-4 py-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-xs font-mono text-neutral-200 hover:text-white flex items-center gap-1.5">
             ${icon('sparkles', 'w-3.5 h-3.5 text-amber-400')} View Full Resume
           </button>
+          -->
         </div>
 
       </div>
@@ -1005,127 +1038,8 @@ function renderFooter() {
 // 6. Modals
 // ----------------------------------------------------------------------------
 function renderResumeModal() {
-  if (!state.isResumeOpen) return '';
-  return `
-    <div id="resume-modal-backdrop" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md animate-fade-in print:p-0 print:bg-white print:static">
-      <div class="relative w-full max-w-4xl max-h-[90vh] bg-neutral-900 border border-neutral-800 rounded-3xl shadow-2xl flex flex-col overflow-hidden print:border-none print:shadow-none print:max-h-none print:w-full print:bg-white print:text-black">
-        
-        <!-- Header -->
-        <div class="flex items-center justify-between px-6 py-4 border-b border-neutral-800 bg-neutral-950/60 print:hidden">
-          <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-400 to-indigo-500 flex items-center justify-center text-white font-bold text-xs shadow-sm">
-              CV
-            </div>
-            <div>
-              <h3 class="text-sm font-mono font-bold text-neutral-100 flex items-center gap-2">
-                Tech Recruiter & Hiring Manager Resume
-                <span class="bubbly-pill-prog text-[10px] px-2 py-0.5 rounded-full font-bold">Software Engineering</span>
-              </h3>
-              <p class="text-xs text-neutral-400 font-mono">
-                ${PROFILE.name} · Full-Stack, WebGL & ML Systems
-              </p>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <button
-              id="copy-resume-btn"
-              class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-mono transition-colors border border-neutral-700"
-            >
-              ${icon(state.copiedResume ? 'check' : 'copy', 'w-3.5 h-3.5')}
-              <span>${state.copiedResume ? 'Copied!' : 'Copy Text'}</span>
-            </button>
-            <button
-              id="print-resume-btn"
-              class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-mono transition-colors border border-neutral-700"
-            >
-              ${icon('printer', 'w-3.5 h-3.5')}
-              <span>Print / PDF</span>
-            </button>
-            <button
-              id="close-resume-btn"
-              class="p-1.5 rounded-xl text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors"
-            >
-              ${icon('x', 'w-5 h-5')}
-            </button>
-          </div>
-        </div>
-
-        <!-- Scrollable Resume Body -->
-        <div class="flex-1 overflow-y-auto p-6 sm:p-10 space-y-8 font-sans text-neutral-300 print:text-black">
-          
-          <!-- Header block -->
-          <div class="border-b border-neutral-800 pb-6">
-            <h1 class="text-3xl font-bold text-neutral-100 tracking-tight font-serif print:text-black">
-              ${PROFILE.name.toUpperCase()}
-            </h1>
-            <p class="text-sm font-mono text-emerald-400 mt-1 font-bold">
-              Software Engineer · Systems Architect · Artist & Writer
-            </p>
-            <div class="flex flex-wrap gap-4 mt-3 text-xs font-mono text-neutral-400">
-              <a href="${PROFILE.social.github.url}" target="_blank" class="hover:underline text-neutral-300">GitHub: ${PROFILE.social.github.url}</a>
-              <span>·</span>
-              <a href="${PROFILE.social.linkedin.url}" target="_blank" class="hover:underline text-neutral-300">LinkedIn: ${PROFILE.social.linkedin.url}</a>
-            </div>
-          </div>
-
-          <!-- Summary -->
-          <div>
-            <h2 class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold mb-2">Summary</h2>
-            <p class="text-sm leading-relaxed text-neutral-300 print:text-black">
-              Interdisciplinary Software Engineer specializing in scalable full-stack web applications, interactive WebGL/WebGPU graphics, developer tools, and machine learning models. Combines strong computer science fundamentals with aesthetic precision from visual arts and architectural systems theory.
-            </p>
-          </div>
-
-          <!-- Skills -->
-          <div>
-            <h2 class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold mb-3">Core Technical Skills</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
-              <div class="p-3 rounded-xl bg-neutral-950/60 border border-neutral-800">
-                <span class="text-neutral-400 block mb-1 font-bold">Languages & Core:</span>
-                <span class="text-neutral-200">Python, C++, TypeScript, JavaScript, SQL, GLSL, HTML5/CSS3</span>
-              </div>
-              <div class="p-3 rounded-xl bg-neutral-950/60 border border-neutral-800">
-                <span class="text-neutral-400 block mb-1 font-bold">Web & Graphics:</span>
-                <span class="text-neutral-200">Vite, Web Workers, Canvas 2D, WebGL 2.0, OPFS, Tailwind CSS</span>
-              </div>
-              <div class="p-3 rounded-xl bg-neutral-950/60 border border-neutral-800">
-                <span class="text-neutral-400 block mb-1 font-bold">Backend & Systems:</span>
-                <span class="text-neutral-200">Node.js, Express, PostgreSQL, SQLite, Redis, REST & GraphQL, Docker</span>
-              </div>
-              <div class="p-3 rounded-xl bg-neutral-950/60 border border-neutral-800">
-                <span class="text-neutral-400 block mb-1 font-bold">ML & Vision:</span>
-                <span class="text-neutral-200">Computer Vision, PyTorch, Diffusers, OpenCV, SIMD Vectorization</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Featured Projects -->
-          <div>
-            <h2 class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold mb-3">Featured Software Projects</h2>
-            <div class="space-y-4">
-              ${projects.map(p => `
-                <div class="p-4 rounded-2xl bg-neutral-950/60 border border-neutral-800/80 space-y-1.5">
-                  <div class="flex items-center justify-between">
-                    <span class="text-sm font-bold font-mono text-neutral-100">${p.title}</span>
-                    <span class="text-xs font-mono text-neutral-500">${p.year}</span>
-                  </div>
-                  <p class="text-xs text-neutral-300">${p.tagline}</p>
-                  <p class="text-xs text-neutral-400 leading-relaxed">${p.overview}</p>
-                  ${p.keyFeatures ? `
-                    <ul class="list-disc list-inside text-xs text-neutral-400 pt-1 space-y-0.5">
-                      ${p.keyFeatures.map(f => `<li>${f}</li>`).join('')}
-                    </ul>
-                  ` : ''}
-                </div>
-              `).join('')}
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  `;
+  // Resume / CV modal commented out per user request
+  return '';
 }
 
 function renderProjectModal() {
@@ -1601,9 +1515,19 @@ function attachEventListeners() {
   document.querySelectorAll('[data-art-cat]').forEach(el => {
     el.addEventListener('click', () => {
       state.artCategory = el.getAttribute('data-art-cat');
+      state.artVisibleCount = 6;
       renderApp();
     });
   });
+
+  // Load More Artworks Button
+  const loadMoreArtBtn = document.getElementById('load-more-art-btn');
+  if (loadMoreArtBtn) {
+    loadMoreArtBtn.addEventListener('click', () => {
+      state.artVisibleCount += 6;
+      renderApp();
+    });
+  }
 
   // Open Art Lightbox
   document.querySelectorAll('[data-open-art]').forEach(el => {

@@ -269,7 +269,7 @@
           'Dual-buffered Ping-Pong FBOs for zero-copy velocity field advection',
           'Vorticity confinement algorithm restoring small turbulent eddies lost to numerical dissipation'
         ],
-        techStack: ['WebGL 2.0', 'GLSL Shaders', 'TypeScript', 'WebAssembly'],
+        techStack: ['WebGL 2.0', 'GLSL Shaders', 'JavaScript', 'WebAssembly'],
         codeSnippet: `precision highp float;
 uniform sampler2D u_velocity;
 uniform sampler2D u_source;
@@ -303,12 +303,14 @@ void main() {
           'IndexedDB + OPFS storage engine ensuring 0ms local read latency',
           'End-to-End Encrypted sync layer using Yjs CRDTs'
         ],
-        techStack: ['TypeScript', 'React', 'Yjs CRDTs', 'Three.js / WebGL', 'WebRTC'],
+        techStack: ['JavaScript', 'HTML5', 'Yjs CRDTs', 'Three.js / WebGL', 'WebRTC'],
         codeSnippet: `export class KnowledgeGraphIndex {
-  private nodes = new Map<string, NoteNode>();
-  private edges = new Set<BacklinkEdge>();
+  constructor() {
+    this.nodes = new Map();
+    this.edges = new Set();
+  }
 
-  public indexDocument(id: string, ast: MarkdownAST): void {
+  indexDocument(id, ast) {
     const wikiLinks = extractWikiLinks(ast);
     for (const target of wikiLinks) {
       this.edges.add({
@@ -337,7 +339,7 @@ void main() {
           'SIMD AVX-512 vectorized Cosine distance kernels',
           'Zero-copy memory mapped persistence with atomic WAL'
         ],
-        techStack: ['Rust', 'SIMD AVX-512', 'Node-API', 'TypeScript'],
+        techStack: ['Rust', 'SIMD AVX-512', 'Node-API', 'JavaScript'],
         codeSnippet: `#[inline(always)]
 pub unsafe fn cosine_distance_simd(a: &[f32], b: &[f32]) -> f32 {
     let mut dot = _mm512_setzero_ps();

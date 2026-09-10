@@ -30,31 +30,60 @@ export function getAllArtworks(explicitArtworks = []) {
 
   const combinedModules = { ...publicArtModules, ...srcArtModules };
 
+  // Map companion previews for low latency loading
+  const previewMap = new Map();
   for (const [path, assetUrl] of Object.entries(combinedModules)) {
-    const filename = path.split('/').pop()?.replace(/\.[^/.]+$/, '') || 'artwork';
-    const id = filename.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    if (path.includes('_preview.')) {
+      const origKey = path.replace('_preview.webp', '').replace('_preview.png', '').replace('_preview.jpg', '');
+      previewMap.set(origKey, assetUrl);
+    }
+  }
+
+  for (const [path, assetUrl] of Object.entries(combinedModules)) {
+    // Skip preview files from being standalone artworks
+    if (path.includes('_preview.')) continue;
+
+    const rawFilename = path.split('/').pop()?.replace(/\.[^/.]+$/, '') || 'artwork';
+    
+    // Clean title from watermark and file markers
+    let cleanName = rawFilename
+      .replace(/[_ ]*Watermark(?:[ _]?(?:PNG|JPEG|JPG))?/gi, '')
+      .replace(/[_ ]*Front(?:[ _]?(?:JPEG|JPG|PNG))?/gi, ' (Front)')
+      .replace(/[_ ]*(?:PNG|JPEG|JPG)$/gi, '')
+      .replace(/[_ ]*edited/gi, '')
+      .replace(/^(\d{2}\.\d{2}\.\d{4})[_\s]*/, '')
+      .replace(/^(\d{2}\.\d{2})[_\s]*/, '')
+      .replace(/[_-]+/g, ' ')
+      .trim();
+
+    if (!cleanName) cleanName = rawFilename;
+
+    const id = cleanName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || rawFilename.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
     if (existingIds.has(id)) continue;
     existingIds.add(id);
 
-    // Derive readable title
-    const title = filename.replace(/[_-]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-
     // Auto-detect year from path or filename
-    const yearMatch = path.match(/\/(\d{4})\//) || filename.match(/\b(19\d\d|20\d\d)\b/);
-    const year = yearMatch ? yearMatch[1] : new Date().getFullYear().toString();
+    const yearMatch = path.match(/\/(\d{4})\//) || rawFilename.match(/\b(19\d\d|20\d\d)\b/) || rawFilename.match(/(\d{4})/);
+    const year = yearMatch ? yearMatch[1] : '2024';
 
-    // Auto-detect category
-    let category = 'Digital Painting';
+    // Auto-detect category based on directory structure and name
+    let category = 'Illustration';
     const lowerPath = path.toLowerCase();
     if (lowerPath.includes('chinese') || lowerPath.includes('shuimo') || lowerPath.includes('ink')) {
       category = 'Chinese Painting';
-    } else if (lowerPath.includes('mixed') || lowerPath.includes('media')) {
-      category = 'Ink & Mixed Media';
-    } else if (lowerPath.includes('book') || lowerPath.includes('print')) {
-      category = 'Book Design';
-    } else if (lowerPath.includes('web') || lowerPath.includes('ui')) {
-      category = 'Website Design';
+    } else if (lowerPath.includes('digital') || lowerPath.includes('sketch') || lowerPath.includes('bubbly') || lowerPath.includes('citrus') || lowerPath.includes('berry')) {
+      category = 'Digital Painting';
+    } else if (lowerPath.includes('illustration')) {
+      category = 'Illustration';
+    }
+
+    // Assign appropriate medium
+    let medium = 'Illustration & Graphic Art';
+    if (category === 'Chinese Painting') {
+      medium = 'Traditional Chinese Ink & Watercolors on Xuan Paper';
+    } else if (category === 'Digital Painting') {
+      medium = 'Digital Painting';
     }
 
     // Standardize public URL for serving
@@ -63,14 +92,19 @@ export function getAllArtworks(explicitArtworks = []) {
       finalUrl = finalUrl.replace('/public/', '/');
     }
 
+    // Low latency companion preview if available
+    const keyWithoutExt = path.replace(/\.[^/.]+$/, '');
+    const previewUrl = previewMap.get(keyWithoutExt) || finalUrl;
+
     autoArtworks.push({
       id,
-      title,
+      title: cleanName,
       imageUrl: finalUrl,
+      previewUrl,
       category,
       year,
-      medium: category,
-      featured: false,
+      medium,
+      featured: category === 'Chinese Painting',
     });
   }
 

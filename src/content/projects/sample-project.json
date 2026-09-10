@@ -7,7 +7,7 @@
   "status": "Active",
   "overview": "Synthesizes real-time Web Audio API frequency bins into interactive WebGL particle dynamics.",
   "techStack": [
-    { "name": "TypeScript", "category": "Language" },
+    { "name": "JavaScript", "category": "Language" },
     { "name": "WebGL", "category": "Graphics" },
     { "name": "Web Audio API", "category": "Audio" }
   ],

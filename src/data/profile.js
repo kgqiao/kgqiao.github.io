@@ -63,11 +63,11 @@ const RAW_PROFILE_DATA = {
       ],
     },
     writing: {
-      badge: 'Discipline 03 · Writing & Essays',
-      title: 'Essays & Literary Publications',
-      role: 'Essayist & Fiction Writer',
-      tagline: 'Critical essays on art history and interface philosophy alongside speculative short fiction.',
-      overview: 'A collection of longform essays investigating negative space in software, Chinese aesthetics, visual culture, and narrative worldbuilding with distraction-free typography.',
+      badge: 'Discipline 03 · Essays & Fiction',
+      title: 'Essays & Fiction',
+      role: 'Writer',
+      tagline: 'Various writing works.',
+      overview: 'Various writing works.',
       highlights: [
         { label: 'Core Themes', value: 'Design Philosophy, Aesthetics' },
         { label: 'Publishing Formats', value: 'Critical Essays & Short Fiction' },

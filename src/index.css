@@ -70,7 +70,7 @@
    =========================================================================
    EASIEST 1-LINE SWAPPING METHOD:
    You do NOT need to comment/uncomment large CSS blocks!
-   Simply open `src/data/profile.ts` and set:
+   Simply open `src/data/profile.js` and set:
      palette: 'studio-triad' | 'celestial-atelier' | 'cybernetic-noir' | 'nordic-terracotta' | 'indigo-vermilion'
    
    The application automatically injects the selected palette variables into
@@ -508,3 +508,27 @@
 .animate-fade-in {
   animation: fadeIn 0.25s ease-out forwards;
 }
+
+/* =========================================================================
+   TYPOGRAPHY
+   ========================================================================= */
+.font-serif {
+  font-family: 'Newsreader', Georgia, serif;
+}
+
+.font-display {
+  font-family: 'Newsreader', Georgia, serif;
+}
+
+.font-brand {
+  font-family: 'Newsreader', Georgia, serif;
+}
+
+.font-sans {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+.font-mono {
+  font-family: 'Fira Code', monospace;
+}
+
