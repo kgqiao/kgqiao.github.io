@@ -35,7 +35,7 @@ const interdisciplinary = getAllInterdisciplinary(INTERDISCIPLINARY_DATA);
 
 // App State
 const state = {
-  activeView: 'main', // 'main' | 'code' | 'art' | 'writing'
+  activeView: 'main',
   codeCategory: 'All',
   artCategory: 'All',
   artVisibleCount: 6,
@@ -45,8 +45,8 @@ const state = {
   activeArtwork: null,
   isArtZoomed: false,
   activeWriting: null,
-  writingFontSize: 'base', // 'sm' | 'base' | 'lg' | 'xl'
-  writingFontFamily: 'serif', // 'serif' | 'sans' | 'mono'
+  writingFontSize: 'base',
+  writingFontFamily: 'serif',
   isResumeOpen: false,
   activeSkillCategory: 'All',
   copiedCode: false,

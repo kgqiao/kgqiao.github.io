@@ -162,8 +162,8 @@ Open **`src/data/profile.js`** and set `palette:` to any of the 5 keys below:
 export const PROFILE = {
   name: 'Katherine Qiao',
   
-  // 🌟 1-Line Palette Switcher:
-  palette: 'studio-triad', // 'studio-triad' | 'celestial-atelier' | 'cybernetic-noir' | 'nordic-terracotta' | 'indigo-vermilion'
+  // 🌟 1-Line Palette Switcher: choose studio-triad, celestial-atelier, cybernetic-noir, nordic-terracotta, or indigo-vermilion
+  palette: 'studio-triad',
   
   // ...
 };
